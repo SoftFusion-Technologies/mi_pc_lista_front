@@ -1,39 +1,56 @@
 @import "tailwindcss";
+
 @font-face {
   font-family: 'Montserrat';
   src: url('./font/Montserrat-VariableFont_wght.ttf') format('truetype');
-  font-weight: 100 900; 
+  font-weight: 100 900;
   font-style: normal;
 }
 
 @font-face {
   font-family: "BigNoodle";
-  src: url('./font/big_noodle_titling.ttf') format('truetype'); 
+  src: url('./font/big_noodle_titling.ttf') format('truetype');
 }
 
 @font-face {
   font-family: "MessinaRegular";
-  src: url('./font/MessinaSans-Regular.ttf') format('truetype'); 
+  src: url('./font/MessinaSans-Regular.ttf') format('truetype');
 }
 
+/* =========================
+   PALETA mi PC lista (brand)
+   ========================= */
+:root {
+  /* Brand */
+  --pc-oro: #DEAE61;
+  --pc-oro-oscuro: #9D703F;
 
-/* 3. Aplica Montserrat a todo el proyecto (¡Esta es la línea clave!) */
+  /* Neutrales cálidos */
+  --pc-crema: #F5D6BB;
+  --pc-marfil: #FFF6EE;
+
+  /* Fondos */
+  --pc-bg: #2D1C1B;
+  --pc-surface: #3D2726;
+  --pc-surface-2: #52332C;
+
+  /* Acción */
+  --pc-wsp: #7D8934;
+
+  /* Tipografías */
+  --font-family-base: 'Montserrat', sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-black-italic: 900;
+}
+
+/* Base tipográfica */
 body {
   font-family: 'MessinaRegular', sans-serif;
 }
 
-
-/* --- El resto de tu código (lo dejamos como estaba por las dudas) --- */
-
 h1 {
   font-family: 'Montserrat', sans-serif;
-  font-weight: 700; /* Negrita */
-}
-
-:root {
-  --font-family-base: 'Montserrat', sans-serif;
-  --font-weight-regular: 400;
-  --font-weight-black-italic: 900;
+  font-weight: 700;
 }
 
 .titulo {
@@ -47,14 +64,42 @@ h1 {
   font-weight: var(--font-weight-regular);
 }
 
-.font-bignoodle {
-  font-family: BigNoodle
+.font-bignoodle { font-family: BigNoodle; }
+.font-messina { font-family: MessinaRegular; }
+
+/* =========================
+   UTILIDADES (clases directas)
+   Usá: className="amarillo", "bg-amarillo", etc.
+   ========================= */
+@layer utilities {
+  /* Texto */
+  .amarillo { color: var(--pc-oro); }
+  .amarillo-oscuro { color: var(--pc-oro-oscuro); }
+  .crema { color: var(--pc-crema); }
+  .marfil { color: var(--pc-marfil); }
+  .verde-wsp { color: var(--pc-wsp); }
+  .fondo { color: var(--pc-bg); }
+
+  /* Backgrounds */
+  .bg-amarillo { background-color: var(--pc-oro); }
+  .bg-amarillo-oscuro { background-color: var(--pc-oro-oscuro); }
+  .bg-crema { background-color: var(--pc-crema); }
+  .bg-fondo { background-color: var(--pc-bg); }
+  .bg-surface { background-color: var(--pc-surface); }
+  .bg-surface-2 { background-color: var(--pc-surface-2); }
+  .bg-wsp { background-color: var(--pc-wsp); }
+
+  /* Bordes */
+  .border-amarillo { border-color: var(--pc-oro); }
+  .border-amarillo-oscuro { border-color: var(--pc-oro-oscuro); }
+  .border-wsp { border-color: var(--pc-wsp); }
+
+  /* Ring (útil para focus/hover) */
+  .ring-amarillo { --tw-ring-color: var(--pc-oro); }
+  .ring-wsp { --tw-ring-color: var(--pc-wsp); }
 }
 
-.font-messina {
-  font-family: MessinaRegular;
-}
-
+/* Animación que ya tenías */
 @keyframes ray {
   0%   { transform: translateX(-40%) skewX(-12deg); opacity: 0; }
   15%  { opacity: .9; }

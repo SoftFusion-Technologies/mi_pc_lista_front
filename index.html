@@ -1,105 +1,115 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-AR">
   <head>
     <meta charset="UTF-8" />
     <meta
       name="viewport"
       content="width=device-width,initial-scale=1,viewport-fit=cover"
     />
-    <title>Infinity Gym | Transformá tu cuerpo, cambiá tu vida — Tucumán</title>
 
+    <!-- SEO básico -->
+    <title>mi PC lista | PCs armadas a pedido para estudio y trabajo en Córdoba</title>
     <meta
       name="description"
-      content="Infinity Gym en Lamadrid 986 (Barrio Sur, Tucumán). Abierto L-V 7:00–22:00 y Sáb/Feriados 10:00–17:00. ¡Dale, vení a entrenar!"
+      content="PCs listas para ESTUDIO y TRABAJO. Armadas a pedido, con garantía. Atención en Córdoba Capital. Pedí tu presupuesto por WhatsApp o llamá al 0351 761 2425."
     />
-    <link rel="canonical" href="https://infinityacademia.ok/" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#0ea5e9" />
 
+    <!-- Canonical (reemplazar por tu dominio real) -->
+    <link rel="canonical" href="https://TU-DOMINIO-AQUI.com/" />
+
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Infinity Gym" />
+    <meta property="og:site_name" content="mi PC lista" />
     <meta
       property="og:title"
-      content="Infinity Gym — Entrená en Barrio Sur, Tucumán"
+      content="mi PC lista | PCs armadas a pedido para estudio y trabajo"
     />
     <meta
       property="og:description"
-      content="📍 Lamadrid 986, Barrio Sur. 🕑 L-V 7:00–22:00 • 🕓 Sáb/Feriados 10:00–17:00. #DaleVení a #Entrenar 💪"
+      content="💻 PCs listas para ESTUDIO y TRABAJO • ⚡ Armadas a pedido • Garantía • 📍 Córdoba Capital • 📲 Presupuesto por WhatsApp"
     />
-    <meta property="og:url" content="https://infinityacademia.ok/" />
+    <meta property="og:url" content="https://TU-DOMINIO-AQUI.com/" />
     <meta property="og:image" content="/og-image.jpg" />
+    <meta property="og:locale" content="es_AR" />
 
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="Infinity Gym — Entrená en Barrio Sur, Tucumán"
+      content="mi PC lista | PCs armadas a pedido en Córdoba"
     />
     <meta
       name="twitter:description"
-      content="Lamadrid 986 • L-V 7–22 • Sáb/Feriados 10–17. #DaleVení a #Entrenar"
+      content="PCs para estudio y trabajo. Armadas a pedido, con garantía. Pedí presupuesto por WhatsApp."
     />
     <meta name="twitter:image" content="/og-image.jpg" />
+
+    <!-- Icons -->
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-        <!-- Tipografía -->
+    <!-- Performance: preconnect fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Tipografía (si la seguís usando en tu proyecto) -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;1,900&display=swap"
-      rel="stylesheet"
-    />
+
+    <!-- CSS app -->
     <link href="/src/index.css" rel="stylesheet" />
+
+    <!-- Structured Data (Schema.org) -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "SportsActivityLocation",
-        "name": "Infinity Gym",
-        "image": "https://infinityacademia.ok/og-image.jpg",
-        "url": "https://infinityacademia.ok/",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Lamadrid 986, Barrio Sur",
-          "addressLocality": "San Miguel de Tucumán",
-          "addressRegion": "Tucumán",
+        "@type": ["LocalBusiness", "ComputerStore"],
+        "name": "mi PC lista",
+        "alternateName": ["pc_lista", "mi PC lista"],
+        "description": "PCs listas para estudio y trabajo. Armadas a pedido con garantía. Atención en Córdoba Capital.",
+        "telephone": "+54 351 761-2425",
+        "areaServed": {
+          "@type": "City",
+          "name": "Córdoba",
           "addressCountry": "AR"
         },
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": "",
-          "longitude": ""
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Córdoba",
+          "addressRegion": "Córdoba",
+          "addressCountry": "AR"
         },
-        "openingHoursSpecification": [
+        "url": "https://TU-DOMINIO-AQUI.com/",
+        "image": "https://TU-DOMINIO-AQUI.com/og-image.jpg",
+        "sameAs": [
+          "https://www.instagram.com/USUARIO_INSTAGRAM_AQUI/"
+        ],
+        "contactPoint": [
           {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": [
-              "Monday",
-              "Tuesday",
-              "Wednesday",
-              "Thursday",
-              "Friday"
-            ],
-            "opens": "07:00",
-            "closes": "22:00"
-          },
-          {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Saturday", "PublicHolidays"],
-            "opens": "10:00",
-            "closes": "17:00"
+            "@type": "ContactPoint",
+            "telephone": "+54 351 761-2425",
+            "contactType": "sales",
+            "areaServed": "AR",
+            "availableLanguage": ["es"]
           }
         ],
-        "sameAs": ["https://www.instagram.com/infinityacademia.ok"],
-        "description": "Gimnasio en Barrio Sur, Tucumán. Abierto L-V 7–22 y Sáb/Feriados 10–17. ¡Dale, vení a entrenar!"
+        "makesOffer": [
+          {
+            "@type": "Offer",
+            "name": "PC armada a pedido (estudio y trabajo)",
+            "availability": "https://schema.org/InStock",
+            "areaServed": "Córdoba Capital",
+            "category": "Computers"
+          }
+        ]
       }
     </script>
   </head>
+
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>

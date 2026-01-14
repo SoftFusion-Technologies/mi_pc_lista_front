@@ -1,5 +1,4 @@
 import Home from "../Pages/Public/Home.jsx";
-import ClasePrueba from "../Pages/Public/ClasePrueba.jsx";
 import Horarios from "../Pages/Public/Horarios.jsx";
 import Socios from "../Pages/Public/Socios.jsx";
 import Espacios from "../Pages/Public/Espacios.jsx";
@@ -12,12 +11,7 @@ const routes = [
         name: "Home",
         showInNav: false, 
     },
-    {
-        path: "/clase-prueba",
-        element: <ClasePrueba />,
-        name: "Clase de Prueba",
-        showInNav: false, 
-    },
+    
     {
         path: "/horarios",
         element: <Horarios />,
