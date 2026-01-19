@@ -1,37 +1,25 @@
-import Ubication from "../../components/Ubication";
-import PlanesDePrecios from "../../components/PlanesDePrecios";
-import SeccionTestimonios from "../../components/SeccionTestimonios";
-import HeroSection from "../../components/HeroSection";
-import FeaturesSection from "../../components/FeaturesSection";
-import EntranamientosAdaptan from "../../components/EntranamientosAdaptan";
-import Banner from "../../components/Banner";
+import Ubication from '../../components/Ubication';
+import PlanesDePrecios from '../../components/PlanesDePrecios';
+import SeccionTestimonios from '../../components/SeccionTestimonios';
+import HeroSection from '../../components/HeroSection';
+import FeaturesSection from '../../components/FeaturesSection';
+import EntranamientosAdaptan from '../../components/EntranamientosAdaptan';
+import Banner from '../../components/Banner';
+import ServiciosSection from '../../components/ServiciosSection';
 
+const whatsappUrl = 'https://wa.me/5493517612425';
 const Home = () => {
   return (
     <div className="bg-gray-900 text-white">
       <HeroSection />
-      <Banner />
-      <EntranamientosAdaptan />
-      <Banner
-        altura="h-[270px] md:h-[320px] lg:h-[350px]"
-        texto_1="text-2xl md:text-3xl lg:text-4xl"
-        texto_2="text-2xl md:text-2xl lg:text-3xl"
-      />
-      <FeaturesSection />
-      <Banner
-        altura="h-[270px] md:h-[320px] lg:h-[350px]"
-        texto_1="text-2xl md:text-3xl lg:text-4xl"
-        texto_2="text-2xl md:text-2xl lg:text-3xl"
-      />
+      <Banner whatsappUrl={whatsappUrl} />
+      <ServiciosSection whatsappUrl={whatsappUrl} />
 
+      {/* <EntranamientosAdaptan />
+      <FeaturesSection />
       <PlanesDePrecios />
-      <Banner
-        altura="h-[270px] md:h-[320px] lg:h-[350px]"
-        texto_1="text-2xl md:text-3xl lg:text-4xl"
-        texto_2="text-2xl md:text-2xl lg:text-3xl"
-      />
       <SeccionTestimonios />
-      <Ubication />
+      <Ubication /> */}
     </div>
   );
 };

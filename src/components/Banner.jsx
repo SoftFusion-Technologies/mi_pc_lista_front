@@ -1,188 +1,590 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { motion, AnimatePresence, useInView } from 'framer-motion';
 
-// Array de imágenes del gimnasio
-const imagenesGimnasio = Array.from(
-  { length: 9 },
-  (_, i) => new URL(`../img/Gimnasio/img-${i + 1}.webp`, import.meta.url).href
-);
+/**
+ * BANNER — Mi PC Lista (Bridge bajo el Hero)
+ * OBJETIVO DE CONTENIDO:
+ * - NO repetir el Hero (método/diagnóstico/optimización general)
+ * - Enfocar en: presupuestar + armar + configurar PCs listas
+ * - 3 perfiles: Estudio / Trabajo / Exigencia
+ * - Flujo: elegir perfil -> ver specs/servicios/garantías -> pedir
+ * - Alcance: Córdoba Capital
+ *
+ * DISEÑO:
+ * - Mantener warm glassmorphism + aurora + pattern tech + marquee
+ * - No tocar estructura general, solo copy y etiquetas
+ */
 
-// Frases motivacionales
-const frasesMotivacionales = [
-  "RESULTADOS QUE HABLAN.",
-  "ENTRENAMIENTOS QUE TRANSFORMAN.",
-  "Superá tus límites cada día.",
-  "El cambio empieza en vos.",
-  "Tu esfuerzo, tu orgullo.",
-  "La constancia vence al talento.",
-  "Entrená fuerte, viví mejor.",
-  "No pares hasta estar orgulloso.",
-  "Hazlo por ti, hazlo por tu salud.",
-  "El dolor es temporal, la gloria es eterna.",
-  "Sé más fuerte que tus excusas.",
-  "El gimnasio es tu zona de poder.",
-  "La motivación te impulsa, el hábito te mantiene.",
-  "Entrená con pasión, viví con propósito.",
-  "El progreso es mejor que la perfección.",
-  "Hazlo por la versión de ti que querés ser.",
-  "No te compares, superate.",
-  "Hoy entrenás, mañana triunfás.",
-  "El éxito es la suma de pequeños esfuerzos.",
-  "La meta no es ser mejor que otros, es ser mejor que ayer.",
-  "Hazlo por el placer de lograrlo.",
-  "La energía que invertís vuelve multiplicada.",
-  "Entrená duro, soñá en grande.",
-  "El movimiento es vida.",
-  "No te detengas hasta que te sientas orgulloso.",
-  "La perseverancia te hace invencible.",
-  "El esfuerzo nunca se desperdicia.",
-  "Hoy es el mejor día para empezar.",
-  "El gimnasio es tu templo.",
-  "La fuerza se construye, no se hereda.",
-  "Entrená con propósito, viví con pasión.",
-  "El sudor es tu medalla diaria.",
-  "La superación es tu mejor recompensa.",
-  "Hazlo por vos, por tu salud, por tu futuro.",
-  "Bienvenido a INFINITY Academia, donde tus metas son nuestra misión.",
-  "No importa tu nivel, aquí todos comienzan con un primer paso.",
-  "Tu bienestar es nuestra prioridad, entrená a tu ritmo.",
-  "Cada repetición cuenta, cada esfuerzo vale la pena.",
-  "Transformá tu día con energía y movimiento.",
-  "En INFINITY Academia, cada día es una oportunidad para mejorar.",
-  "Entrená con amigos, creá recuerdos, alcanzá tus metas.",
-  "Tu salud es tu riqueza, cuidala con nosotros.",
-  "No importa la experiencia, importa la actitud.",
-  "Un gimnasio para todos, un lugar para vos.",
-  "Descubrí tu mejor versión en INFINITY Academia.",
-  "Entrená con confianza, viví con energía.",
-  "Tu esfuerzo inspira, tu progreso motiva.",
-  "En INFINITY Academia, cada logro es celebrado.",
-  "Un espacio para crecer, un lugar para triunfar.",
-  "Entrená hoy, disfrutá mañana.",
-  "Tu cuerpo te lo agradecerá, tu mente también.",
-  "La comunidad INFINITY te espera, ¡sumate hoy!",
-];
+const cx = (...c) => c.filter(Boolean).join(' ');
 
-// Estado global para evitar repeticiones hasta agotar todas las opciones
-const imagenesUsadas = new Set();
-const frasesUsadas = new Set();
-
-const obtenerElementoUnico = (array, conjuntoUsado) => {
-  const elementosDisponibles = array.filter((item) => !conjuntoUsado.has(item));
-  if (elementosDisponibles.length === 0) {
-    conjuntoUsado.clear(); // Reinicia el ciclo si se agotan las opciones
-    return array[Math.floor(Math.random() * array.length)];
-  }
-  const elemento =
-    elementosDisponibles[
-      Math.floor(Math.random() * elementosDisponibles.length)
-    ];
-  conjuntoUsado.add(elemento);
-  return elemento;
+const enter = {
+  hidden: { opacity: 0, y: 18 },
+  show: (d = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: 'easeOut', delay: d }
+  })
 };
 
-// Usaremos esta función para generar variantes
-const crearVariantes = (
-  direccion = "up",
-  distancia = 25,
-  duracion = 0.45,
-  delay = 0
-) => {
-  const prop = direccion === "left" || direccion === "right" ? "x" : "y";
-  const signo = direccion === "up" || direccion === "left" ? -1 : 1;
-  const hidden = { opacity: 0, [prop]: signo * distancia };
-  const visible = {
-    opacity: 1,
-    [prop]: 0,
-    transition: { duration: duracion, ease: "easeOut", delay },
-  };
-  return { hidden, visible };
+const floaty = {
+  initial: { y: 0 },
+  animate: {
+    y: [0, -6, 0],
+    transition: { duration: 4.6, repeat: Infinity, ease: 'easeInOut' }
+  }
 };
 
 const Banner = ({
-  altura = "h-[340px] md:h-[420px] lg:h-[480px]",
-  texto_1 = "text-3xl md:text-4xl lg:text-5xl xl:text-6xl",
-  texto_2 = "text-2xl md:text-3xl lg:text-4xl xl:text-5xl",
-  direccionSuperior = "left",
-  direccionInferior = "right",
-  distancia = 30,
-  duracion = 0.45,
-  delayInferior = 0.06,
+  id = 'banner',
+  anchorServicios = '#servicios',
+  anchorContacto = '#contacto',
+  // Si ya tenés WhatsApp, pasalo acá (ej: "https://wa.me/549351xxxxxxx?text=Hola%20Mi%20PC%20Lista...")
+  whatsappUrl = ''
 }) => {
-  const imagenBanner = obtenerElementoUnico(imagenesGimnasio, imagenesUsadas);
-  const frase1 = obtenerElementoUnico(frasesMotivacionales, frasesUsadas);
-  let frase2 = obtenerElementoUnico(frasesMotivacionales, frasesUsadas);
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, amount: 0.35 });
 
-  if (frase2 === frase1) {
-    frase2 =
-      frasesMotivacionales[
-        (frasesMotivacionales.indexOf(frase1) + 1) % frasesMotivacionales.length
-      ];
-  }
-
-  // Clave única para reiniciar la animación al cambiar las frases
-  const keyAnim = `${frase1.replaceAll(" ", "_")}_${frase2.replaceAll(
-    " ",
-    "_"
-  )}`;
-
-  // Generar variantes a partir de las props
-  const variantesSuperior = crearVariantes(
-    direccionSuperior,
-    distancia,
-    duracion,
-    0
+  // Rotador de mensajes: ahora enfocado en “comprar tu PC lista”
+  const taglines = useMemo(
+    () => [
+      'Elegís tu perfil (Estudio / Trabajo / Exigencia) y listo.',
+      'Ves componentes + servicios + garantías antes de confirmar.',
+      'PC armada y configurada para usar apenas la prendés.',
+      'Pedidos dentro de Córdoba Capital.',
+      'Transparencia total: lo que pedís es lo que recibís, sin sorpresas.'
+    ],
+    []
   );
-  const variantesInferior = crearVariantes(
-    direccionInferior,
-    distancia,
-    duracion,
-    delayInferior
+
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => {
+      setIdx((p) => (p + 1) % taglines.length);
+    }, 4200);
+    return () => clearInterval(t);
+  }, [taglines.length]);
+
+  // Cards: 3 perfiles + un cuarto ítem de pedido/alcance (sin repetir Hero)
+  const features = useMemo(
+    () => [
+      {
+        title: 'PC para Estudiar',
+        desc: 'Fluida, estable y lista para tareas diarias, clases y herramientas básicas.',
+        tag: 'ESTUDIO'
+      },
+      {
+        title: 'PC para Trabajar',
+        desc: 'Enfoque en productividad y multitarea: rendimiento consistente para laburo real.',
+        tag: 'TRABAJO'
+      },
+      {
+        title: 'PC para Exigencia',
+        desc: 'Para cargas más pesadas: proyectos grandes, edición o tareas intensivas.',
+        tag: 'PRO'
+      },
+      {
+        title: 'Pedido en Córdoba Capital',
+        desc: 'El pedido se realiza dentro de Córdoba Capital para asegurar entrega y soporte.',
+        tag: 'CBA'
+      }
+    ],
+    []
+  );
+
+  // SVG pattern (tech warm)
+  const circuitPattern = encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="rgba(222,174,97,0.20)"/>
+          <stop offset="1" stop-color="rgba(157,112,63,0.12)"/>
+        </linearGradient>
+      </defs>
+      <g fill="none" stroke="url(#g)" stroke-width="1.5" opacity="0.95">
+        <path d="M18 54h78v42h60V72h66" />
+        <path d="M18 186h96v-42h42v66h66" />
+        <path d="M54 18v78h42v60h-24v66" />
+        <path d="M198 18v96h-42v42h66" />
+        <circle cx="96" cy="96" r="4.2" fill="rgba(222,174,97,0.32)" stroke="rgba(222,174,97,0.16)"/>
+        <circle cx="156" cy="96" r="4.2" fill="rgba(157,112,63,0.28)" stroke="rgba(157,112,63,0.14)"/>
+        <circle cx="120" cy="144" r="4.2" fill="rgba(245,214,187,0.22)" stroke="rgba(245,214,187,0.12)"/>
+        <circle cx="198" cy="162" r="4.2" fill="rgba(222,174,97,0.22)" stroke="rgba(222,174,97,0.12)"/>
+      </g>
+    </svg>
+  `);
+
+  const marqueeItems = useMemo(
+    () => [
+      'PC Estudio',
+      'PC Trabajo',
+      'PC Exigencia',
+      'Armado',
+      'Configuración',
+      'Instalación del sistema',
+      'Drivers',
+      'Optimización inicial',
+      'Backup / Migración',
+      'Ajustes de seguridad',
+      'Checklist final',
+      'Pedidos CBA Capital'
+    ],
+    []
   );
 
   return (
     <section
-      key={keyAnim}
-      className={`relative w-full ${altura} flex items-stretch overflow-hidden bg-black`}
+      id={id}
+      ref={ref}
+      className={cx(
+        'relative isolate overflow-hidden',
+        'bg-[color:var(--pc-bg)] text-[color:var(--pc-marfil)]'
+      )}
     >
-      {/* Imagen de fondo */}
-      <img
-        src={imagenBanner}
-        alt="Banner gimnasio"
-        className="absolute inset-0 w-full h-full object-cover object-center opacity-80"
-        style={{ filter: "brightness(0.7) grayscale(0.2)" }}
-        aria-hidden
-      />
-      {/* Overlay oscuro para el texto */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent" />
-      {/* Contenido */}
-      <div className="relative z-10 flex flex-col md:flex-row w-full h-full">
-        <div className="flex flex-col justify-center items-start px-6 md:px-12 lg:px-20 py-8 md:py-0 w-full md:w-1/2">
-          <motion.h1
-            variants={variantesSuperior}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.35 }}
-            className={`font-druk ${texto_1} leading-tight uppercase mb-2 text-white drop-shadow-lg`}
-          >
-            {frase1}
-          </motion.h1>
+      {/* ===== Background system ===== */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        {/* pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.55]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml;utf8,${circuitPattern}")`,
+            backgroundSize: '260px 260px',
+            backgroundRepeat: 'repeat',
+            transform: 'rotate(6deg) scale(1.04)',
+            maskImage:
+              'radial-gradient(70% 60% at 50% 42%, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 100%)',
+            WebkitMaskImage:
+              'radial-gradient(70% 60% at 50% 42%, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 100%)'
+          }}
+        />
 
-          <motion.span
-            variants={variantesInferior}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.35 }}
-            className={`font-druk ${texto_2} leading-tight uppercase mt-2 block text-transparent bg-clip-text bg-gradient-to-r from-gray-100 via-gray-200 to-gray-400 drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]`}
-          >
-            {frase2}
-          </motion.span>
-        </div>
-        <div className="hidden md:block w-1/2" />
-        {/* Difuminado negro arriba y abajo */}
-        <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-black/90 to-transparent pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-black/90 to-transparent pointer-events-none" />
+        {/* aurora blobs */}
+        <div
+          className="absolute -top-36 -left-36 size-[44rem] rounded-full blur-3xl opacity-70"
+          style={{
+            background:
+              'radial-gradient(circle at 30% 30%, rgba(222,174,97,0.22), rgba(157,112,63,0.10) 42%, rgba(0,0,0,0) 74%)'
+          }}
+        />
+        <div
+          className="absolute -bottom-44 -right-36 size-[48rem] rounded-full blur-3xl opacity-65"
+          style={{
+            background:
+              'radial-gradient(circle at 30% 30%, rgba(245,214,187,0.12), rgba(222,174,97,0.12) 45%, rgba(0,0,0,0) 76%)'
+          }}
+        />
+
+        {/* subtle grid */}
+        <div
+          className="absolute inset-0 opacity-[0.18]"
+          style={{
+            backgroundImage:
+              'linear-gradient(to right, rgba(245,214,187,.10) 1px, transparent 1px), linear-gradient(to bottom, rgba(245,214,187,.10) 1px, transparent 1px)',
+            backgroundSize: '48px 48px',
+            maskImage:
+              'radial-gradient(70% 56% at 50% 42%, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 100%)',
+            WebkitMaskImage:
+              'radial-gradient(70% 56% at 50% 42%, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 100%)'
+          }}
+        />
+
+        {/* vignette */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(70% 60% at 50% 35%, rgba(0,0,0,0) 35%, rgba(0,0,0,0.45) 100%)'
+          }}
+        />
       </div>
+
+      {/* ===== Content ===== */}
+      <div className="relative z-10 mx-auto max-w-6xl px-4 py-14 md:py-16">
+        <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] items-start">
+          {/* Right: “Proof / Flow card” */}
+          <motion.div
+            variants={enter}
+            initial="hidden"
+            animate={inView ? 'show' : 'hidden'}
+            custom={0.08}
+            className="relative"
+          >
+            <div
+              aria-hidden
+              className="absolute -inset-6 rounded-[28px] blur-2xl opacity-55"
+              style={{
+                background:
+                  'radial-gradient(circle at 30% 30%, rgba(222,174,97,0.22), rgba(157,112,63,0.10) 40%, rgba(0,0,0,0) 72%)'
+              }}
+            />
+
+            <motion.div
+              variants={floaty}
+              initial="initial"
+              animate="animate"
+              className="relative rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_30px_90px_rgba(0,0,0,0.55)] overflow-hidden"
+            >
+              {/* top bar */}
+              <div className="flex items-center justify-between px-5 pt-5">
+                <div className="flex items-center gap-2">
+                  <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--pc-oro)] shadow-[0_0_12px_rgba(222,174,97,0.45)]" />
+                  <span className="text-[12px] uppercase tracking-[0.22em] text-white/70 font-messina">
+                    tu pc lista
+                  </span>
+                </div>
+
+                <span
+                  className="rounded-full px-3 py-1 text-[12px] border bg-black/20"
+                  style={{
+                    borderColor: 'rgba(222,174,97,0.22)',
+                    color: 'rgba(255,246,238,0.72)'
+                  }}
+                >
+                  pedido guiado
+                </span>
+              </div>
+
+              {/* KPI row (ahora orientado a la propuesta comercial) */}
+              <div className="px-5 pt-4 grid grid-cols-3 gap-2">
+                {[
+                  { k: 'Perfiles', v: '3', w: '76%' },
+                  { k: 'Entrega', v: 'Lista', w: '68%' },
+                  { k: 'Zona', v: 'Córdoba', w: '60%' }
+                ].map((it) => (
+                  <div
+                    key={it.k}
+                    className="rounded-2xl border border-white/10 bg-black/15 px-3 py-3"
+                  >
+                    <div className="text-[10px] uppercase tracking-[0.20em] text-white/50">
+                      {it.k}
+                    </div>
+                    <div className="mt-1 text-[13px] sm:text-[14px] font-semibold text-white/85">
+                      <span
+                        className="bg-clip-text text-transparent"
+                        style={{
+                          backgroundImage:
+                            'linear-gradient(90deg, rgba(255,246,238,0.95), rgba(222,174,97,0.92), rgba(157,112,63,0.90))'
+                        }}
+                      >
+                        {it.v}
+                      </span>
+                    </div>
+                    <div className="mt-2 h-1.5 rounded-full bg-white/10 overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-[rgba(222,174,97,0.55)] animate-[bar_2.1s_ease-in-out_infinite]"
+                        style={{ width: it.w }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* perfiles / alcance */}
+              <div className="px-5 pb-6 pt-5">
+                <div className="grid gap-2.5">
+                  {features.map((r) => (
+                    <div
+                      key={r.title}
+                      className="flex items-start gap-3 rounded-2xl border border-white/10 px-4 py-3 bg-black/15"
+                    >
+                      <div
+                        className="mt-0.5 h-9 w-9 rounded-2xl border bg-white/5 flex items-center justify-center"
+                        style={{ borderColor: 'rgba(222,174,97,0.20)' }}
+                      >
+                        <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--pc-oro)] shadow-[0_0_10px_rgba(222,174,97,0.35)]" />
+                      </div>
+
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <div className="text-[13px] sm:text-sm font-semibold text-white/85">
+                            {r.title}
+                          </div>
+                          <span
+                            className="text-[10px] uppercase tracking-[0.18em] rounded-full px-2 py-0.5 border bg-black/10"
+                            style={{
+                              borderColor: 'rgba(157,112,63,0.22)',
+                              color: 'rgba(245,214,187,0.70)'
+                            }}
+                          >
+                            {r.tag}
+                          </span>
+                        </div>
+
+                        <div className="mt-1 text-[12px] sm:text-[13px] text-white/65 leading-relaxed">
+                          {r.desc}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* shimmer separator */}
+                <div className="mt-5 h-px w-full bg-white/10 relative overflow-hidden rounded-full">
+                  <div className="absolute -left-1/2 top-0 h-full w-1/2 bg-[rgba(222,174,97,0.45)] blur-md animate-[rayline_2.2s_ease-out_infinite]" />
+                </div>
+
+                <div className="mt-4 text-[12px] text-white/55">
+                  La idea es simple: elegís el perfil que necesitás y te
+                  mostramos todo antes de confirmar.
+                </div>
+              </div>
+
+              {/* corner accents */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -top-16 -right-16 size-64 rounded-full blur-3xl opacity-35"
+                style={{
+                  background:
+                    'radial-gradient(circle at 30% 30%, rgba(222,174,97,0.26), rgba(0,0,0,0) 70%)'
+                }}
+              />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -bottom-16 -left-16 size-64 rounded-full blur-3xl opacity-30"
+                style={{
+                  background:
+                    'radial-gradient(circle at 30% 30%, rgba(245,214,187,0.18), rgba(0,0,0,0) 72%)'
+                }}
+              />
+            </motion.div>
+          </motion.div>
+          {/* Left */}
+          <motion.div
+            variants={enter}
+            initial="hidden"
+            animate={inView ? 'show' : 'hidden'}
+            custom={0}
+            className="text-left"
+          >
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-xl">
+              <span className="font-bignoodle tracking-[0.22em] text-[11px] uppercase crema">
+                mi pc lista · presupuestos por perfil
+              </span>
+              <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--pc-oro)] shadow-[0_0_12px_rgba(222,174,97,0.45)]" />
+              <span className="text-[12px] text-white/70">
+                Estudio · Trabajo · Exigencia
+              </span>
+            </div>
+
+            <h2 className="mt-5 text-3xl sm:text-4xl md:text-5xl leading-[1.06]">
+              <span className="titulo block">
+                ¡Tu PC según lo que necesitás!
+              </span>
+              <span className="cuerpo block mt-2 text-white/80 text-[15px] sm:text-base md:text-lg max-w-xl">
+                Seleccionás un perfil, revisás
+                especificaciones/servicios/garantías y realizás el pedido.
+                <span className="ml-2 crema">
+                  Pedidos dentro de Córdoba Capital.
+                </span>
+              </span>
+            </h2>
+
+            {/* Rotating tagline */}
+            <div className="mt-6 max-w-xl">
+              <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl px-4 py-4">
+                {/* scanline */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 opacity-70"
+                  style={{
+                    maskImage:
+                      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 60%)',
+                    WebkitMaskImage:
+                      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 60%)'
+                  }}
+                >
+                  <div className="absolute -top-12 left-0 h-24 w-full animate-[scan_2.8s_linear_infinite] bg-[linear-gradient(90deg,transparent,rgba(222,174,97,0.18),transparent)]" />
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div
+                    className="mt-0.5 h-10 w-10 rounded-2xl border bg-black/20 flex items-center justify-center"
+                    style={{ borderColor: 'rgba(222,174,97,0.26)' }}
+                  >
+                    <span className="h-2 w-2 rounded-full bg-[color:var(--pc-oro)] shadow-[0_0_12px_rgba(222,174,97,0.50)]" />
+                  </div>
+
+                  <div className="min-w-0">
+                    <div className="text-[11px] uppercase tracking-[0.22em] text-white/55">
+                      cómo funciona
+                    </div>
+
+                    <div className="mt-2 text-[14px] sm:text-[15px] text-white/80 leading-relaxed">
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, y: 10, filter: 'blur(3px)' }}
+                          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                          exit={{ opacity: 0, y: -10, filter: 'blur(3px)' }}
+                          transition={{ duration: 0.35, ease: 'easeOut' }}
+                        >
+                          <span
+                            className="bg-clip-text text-transparent"
+                            style={{
+                              backgroundImage:
+                                'linear-gradient(90deg, rgba(255,246,238,0.95), rgba(222,174,97,0.92), rgba(157,112,63,0.90))'
+                            }}
+                          >
+                            {taglines[idx]}
+                          </span>
+                        </motion.div>
+                      </AnimatePresence>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* CTAs */}
+            <div className="mt-6 flex flex-col sm:flex-row gap-3 sm:items-center">
+              <a href={anchorServicios} className="inline-flex">
+                <button
+                  className={cx(
+                    'group relative inline-flex items-center justify-center',
+                    'rounded-2xl px-6 py-3 text-sm md:text-base',
+                    'text-[color:var(--pc-bg)] font-semibold',
+                    'shadow-[0_18px_50px_rgba(0,0,0,0.45)]',
+                    'ring-1 ring-[rgba(222,174,97,0.35)]',
+                    'transition-transform duration-200 hover:-translate-y-[1px] active:translate-y-0'
+                  )}
+                  style={{
+                    background:
+                      'linear-gradient(135deg, rgba(222,174,97,0.98), rgba(157,112,63,0.95))'
+                  }}
+                >
+                  <span className="relative z-10">Ver perfiles</span>
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl"
+                  >
+                    <span className="absolute -left-1/2 top-0 h-full w-1/2 bg-[rgba(255,246,238,0.35)] opacity-0 blur-md skew-x-[-12deg] group-hover:opacity-60 animate-[ray_1.2s_ease-out_infinite]" />
+                  </span>
+                </button>
+              </a>
+
+              {whatsappUrl ? (
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex"
+                >
+                  <button
+                    className={cx(
+                      'inline-flex items-center justify-center rounded-2xl px-6 py-3',
+                      'text-sm md:text-base font-semibold',
+                      'border border-[rgba(125,137,52,0.35)]',
+                      'bg-[rgba(125,137,52,0.10)] backdrop-blur-xl',
+                      'text-[rgba(255,246,238,0.90)]',
+                      'hover:bg-[rgba(125,137,52,0.16)] transition'
+                    )}
+                  >
+                    WhatsApp directo
+                  </button>
+                </a>
+              ) : (
+                <a
+                  href={anchorContacto}
+                  className={cx(
+                    'inline-flex items-center justify-center rounded-2xl px-6 py-3',
+                    'text-sm md:text-base font-semibold',
+                    'border border-white/10',
+                    'bg-white/5 backdrop-blur-xl',
+                    'text-white/85 hover:bg-white/7 transition'
+                  )}
+                >
+                  Contacto
+                </a>
+              )}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* ===== Marquee (servicios / componentes de la propuesta) ===== */}
+        <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl overflow-hidden">
+          <div className="relative">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-[color:var(--pc-bg)] to-transparent"
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-[color:var(--pc-bg)] to-transparent"
+            />
+
+            <div className="py-4">
+              <div className="marquee motion-reduce:animate-none">
+                <div className="marquee__track">
+                  {marqueeItems.map((t) => (
+                    <span
+                      key={t}
+                      className="mx-3 inline-flex items-center gap-3 rounded-full border border-white/10 bg-black/10 px-4 py-2 text-[12px] sm:text-[13px] text-white/75"
+                    >
+                      <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--pc-oro)] shadow-[0_0_10px_rgba(222,174,97,0.40)]" />
+                      <span className="uppercase tracking-[0.18em]">{t}</span>
+                    </span>
+                  ))}
+                </div>
+
+                <div className="marquee__track" aria-hidden>
+                  {marqueeItems.map((t) => (
+                    <span
+                      key={`dup-${t}`}
+                      className="mx-3 inline-flex items-center gap-3 rounded-full border border-white/10 bg-black/10 px-4 py-2 text-[12px] sm:text-[13px] text-white/75"
+                    >
+                      <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--pc-oro)] shadow-[0_0_10px_rgba(222,174,97,0.40)]" />
+                      <span className="uppercase tracking-[0.18em]">{t}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Separator para encastre con la sección siguiente */}
+        <div className="mt-10 h-px w-full bg-white/10" />
+      </div>
+
+      {/* ===== Keyframes local ===== */}
+      <style>{`
+        @keyframes scan {
+          0%   { transform: translateY(0); opacity: 0; }
+          15%  { opacity: 0.9; }
+          100% { transform: translateY(340px); opacity: 0; }
+        }
+        @keyframes bar {
+          0%   { transform: translateX(-60%); opacity: 0.4; }
+          50%  { opacity: 0.85; }
+          100% { transform: translateX(60%); opacity: 0.4; }
+        }
+        @keyframes ray {
+          0%   { transform: translateX(-40%) skewX(-12deg); opacity: 0; }
+          15%  { opacity: .85; }
+          100% { transform: translateX(40%)  skewX(-12deg); opacity: 0; }
+        }
+        @keyframes rayline {
+          0%   { transform: translateX(-55%); opacity: 0; }
+          25%  { opacity: 0.8; }
+          100% { transform: translateX(55%); opacity: 0; }
+        }
+        .marquee {
+          display: flex;
+          width: 100%;
+          overflow: hidden;
+          user-select: none;
+        }
+        .marquee__track {
+          display: inline-flex;
+          align-items: center;
+          white-space: nowrap;
+          animation: marquee 18s linear infinite;
+        }
+        @keyframes marquee {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-100%); }
+        }
+      `}</style>
     </section>
   );
 };
