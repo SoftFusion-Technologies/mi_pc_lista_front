@@ -353,7 +353,7 @@ const HeroSection = () => {
               className="mt-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.04]"
             >
               <span className="titulo block">
-                Tu PC,
+                TU PC
                 <span className="ml-3 inline-block">
                   <motion.span
                     ref={hitRef}
