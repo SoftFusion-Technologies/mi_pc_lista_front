@@ -16,7 +16,7 @@ function buildWhatsAppLink(baseUrl, message) {
 }
 
 const Footer = ({
-  whatsappUrl = '', // ej: "https://wa.me/549351XXXXXXX"
+  whatsappUrl = '', // ej: "https://wa.me/5495493517612425"
   instagramUrl = '#',
   facebookUrl = '#',
   tiktokUrl = '#',

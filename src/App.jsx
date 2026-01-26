@@ -6,8 +6,7 @@ import { useEffect } from 'react';
 
 import { AuthProvider } from './AuthContext';
 // cambio agregado por Benjamin Orellana
-// aqui dentro ponemos las rutas en las que no queremos mostrar el nav
-
+import NotFound from './Pages/NotFound.jsx';
 export default function App() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -23,7 +22,15 @@ export default function App() {
           <Route key={index} path={route.path} element={route.element} />
         ))}
         {/* Ruta para redirigir si se intenta acceder a la raíz sin estar logueado */}
-        <Route path="*" element={<div>404 - Página no encontrada</div>} />
+        <Route
+          path="*"
+          element={
+            <NotFound
+              whatsappUrl="https://wa.me/5495493517612425"
+              zona="Córdoba Capital"
+            />
+          }
+        />{' '}
       </Routes>
       <Footer />
     </AuthProvider>

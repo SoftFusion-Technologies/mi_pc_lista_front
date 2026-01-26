@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
  * - Pedidos dentro de Córdoba Capital
  *
  * Uso:
- * <ServiciosSection whatsappUrl="https://wa.me/549351xxxxxxx" />
+ * <ServiciosSection whatsappUrl="https://wa.me/5495493517612425" />
  * o
  * <ServiciosSection />
  */
