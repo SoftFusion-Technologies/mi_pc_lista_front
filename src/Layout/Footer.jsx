@@ -232,7 +232,7 @@ const Footer = ({
 
                 <div className="mt-4 flex flex-col sm:flex-row gap-2">
                   <a
-                    href="/#servicios"
+                    href="/#perfiles"
                     className="inline-flex items-center justify-center rounded-2xl px-4 py-3 text-sm font-semibold border border-white/10 bg-white/5 hover:bg-white/8 transition"
                   >
                     Ver perfiles

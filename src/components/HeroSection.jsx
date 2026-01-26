@@ -646,7 +646,7 @@ const HeroSection = () => {
 
               {/* Secondary CTA */}
               <a
-                href="#servicios"
+                href="#perfiles"
                 className={cx(
                   'inline-flex items-center justify-center rounded-2xl px-6 py-3',
                   'text-sm md:text-base font-semibold',
@@ -656,7 +656,7 @@ const HeroSection = () => {
                   'hover:bg-[rgba(255,246,238,0.05)] transition'
                 )}
               >
-                Ver servicios
+                Ver perfiles
               </a>
             </motion.div>
 

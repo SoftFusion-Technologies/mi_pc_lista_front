@@ -4,11 +4,11 @@ import { motion, AnimatePresence, useInView } from 'framer-motion';
 /**
  * BANNER — Mi PC Lista (Bridge bajo el Hero)
  * OBJETIVO DE CONTENIDO:
- * - NO repetir el Hero (método/diagnóstico/optimización general)
- * - Enfocar en: presupuestar + armar + configurar PCs listas
- * - 3 perfiles: Estudio / Trabajo / Exigencia
- * - Flujo: elegir perfil -> ver specs/servicios/garantías -> pedir
- * - Alcance: Córdoba Capital
+ * - NO repetir el Hero (servicio técnico / diagnósticos / “sin vueltas”)
+ * - Enfocar en: PCs armadas a pedido (cotización por perfil + armado + setup + pruebas)
+ * - 3 perfiles: Estudio / Trabajo / Pro (Exigencia)
+ * - Flujo: elegir perfil -> propuesta de componentes -> armado/config -> entrega
+ * - Alcance: Córdoba Capital (mencionado UNA vez, claro)
  *
  * DISEÑO:
  * - Mantener warm glassmorphism + aurora + pattern tech + marquee
@@ -36,22 +36,21 @@ const floaty = {
 
 const Banner = ({
   id = 'banner',
-  anchorServicios = '#servicios',
+  anchorServicios = '#perfiles',
   anchorContacto = '#contacto',
-  // Si ya tenés WhatsApp, pasalo acá (ej: "https://wa.me/5495493517612425?text=Hola%20Mi%20PC%20Lista...")
   whatsappUrl = ''
 }) => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.35 });
 
-  // Rotador de mensajes: ahora enfocado en “comprar tu PC lista”
+  // Rotador: proceso de compra/armado (sin repetir el Hero)
   const taglines = useMemo(
     () => [
-      'Elegís tu perfil (Estudio / Trabajo / Exigencia) y listo.',
-      'Ves componentes + servicios + garantías antes de confirmar.',
-      'PC armada y configurada para usar apenas la prendés.',
-      'Pedidos dentro de Córdoba Capital.',
-      'Transparencia total: lo que pedís es lo que recibís, sin sorpresas.'
+      'Elegí un perfil y contanos tu presupuesto objetivo.',
+      'Te pasamos una propuesta de componentes con alternativas claras.',
+      'Armado prolijo + instalación + drivers: lista para usar.',
+      'Pruebas y checklist final antes de la entrega.',
+      'Garantía y soporte post-entrega para que estés tranquilo.'
     ],
     []
   );
@@ -65,28 +64,28 @@ const Banner = ({
     return () => clearInterval(t);
   }, [taglines.length]);
 
-  // Cards: 3 perfiles + un cuarto ítem de pedido/alcance (sin repetir Hero)
+  // Cards: 3 perfiles + “incluye” (evita repetir “Córdoba Capital” dentro del bloque)
   const features = useMemo(
     () => [
       {
-        title: 'PC para Estudiar',
-        desc: 'Fluida, estable y lista para tareas diarias, clases y herramientas básicas.',
+        title: 'PC Estudio',
+        desc: 'Fluida para clases, trabajos, navegación, videollamadas y herramientas de todos los días.',
         tag: 'ESTUDIO'
       },
       {
-        title: 'PC para Trabajar',
-        desc: 'Enfoque en productividad y multitarea: rendimiento consistente para laburo real.',
+        title: 'PC Trabajo',
+        desc: 'Multitarea y productividad: rendimiento consistente para laburo real y uso intensivo.',
         tag: 'TRABAJO'
       },
       {
-        title: 'PC para Exigencia',
-        desc: 'Para cargas más pesadas: proyectos grandes, edición o tareas intensivas.',
+        title: 'PC Pro',
+        desc: 'Para exigencia: proyectos grandes, edición, diseño y tareas más pesadas.',
         tag: 'PRO'
       },
       {
-        title: 'Pedido en Córdoba Capital',
-        desc: 'El pedido se realiza dentro de Córdoba Capital para asegurar entrega y soporte.',
-        tag: 'CBA'
+        title: 'Incluye armado + setup + pruebas',
+        desc: 'Instalación, drivers y puesta a punto inicial + checklist final antes de entregar.',
+        tag: 'LISTA'
       }
     ],
     []
@@ -118,16 +117,17 @@ const Banner = ({
     () => [
       'PC Estudio',
       'PC Trabajo',
-      'PC Exigencia',
-      'Armado',
-      'Configuración',
-      'Instalación del sistema',
+      'PC Pro',
+      'Armado a pedido',
+      'Cableado prolijo',
+      'Instalación',
       'Drivers',
-      'Optimización inicial',
-      'Backup / Migración',
-      'Ajustes de seguridad',
+      'Configuración inicial',
+      'Migración de datos',
+      'Seguridad básica',
+      'Pruebas de estabilidad',
       'Checklist final',
-      'Pedidos CBA Capital'
+      'Garantía y soporte'
     ],
     []
   );
@@ -201,153 +201,6 @@ const Banner = ({
       {/* ===== Content ===== */}
       <div className="relative z-10 mx-auto max-w-6xl px-4 py-14 md:py-16">
         <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] items-start">
-          {/* Right: “Proof / Flow card” */}
-          <motion.div
-            variants={enter}
-            initial="hidden"
-            animate={inView ? 'show' : 'hidden'}
-            custom={0.08}
-            className="relative"
-          >
-            <div
-              aria-hidden
-              className="absolute -inset-6 rounded-[28px] blur-2xl opacity-55"
-              style={{
-                background:
-                  'radial-gradient(circle at 30% 30%, rgba(222,174,97,0.22), rgba(157,112,63,0.10) 40%, rgba(0,0,0,0) 72%)'
-              }}
-            />
-
-            <motion.div
-              variants={floaty}
-              initial="initial"
-              animate="animate"
-              className="relative rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_30px_90px_rgba(0,0,0,0.55)] overflow-hidden"
-            >
-              {/* top bar */}
-              <div className="flex items-center justify-between px-5 pt-5">
-                <div className="flex items-center gap-2">
-                  <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--pc-oro)] shadow-[0_0_12px_rgba(222,174,97,0.45)]" />
-                  <span className="text-[12px] uppercase tracking-[0.22em] text-white/70 font-messina">
-                    tu pc lista
-                  </span>
-                </div>
-
-                <span
-                  className="rounded-full px-3 py-1 text-[12px] border bg-black/20"
-                  style={{
-                    borderColor: 'rgba(222,174,97,0.22)',
-                    color: 'rgba(255,246,238,0.72)'
-                  }}
-                >
-                  pedido guiado
-                </span>
-              </div>
-
-              {/* KPI row (ahora orientado a la propuesta comercial) */}
-              <div className="px-5 pt-4 grid grid-cols-3 gap-2">
-                {[
-                  { k: 'Perfiles', v: '3', w: '76%' },
-                  { k: 'Entrega', v: 'Lista', w: '68%' },
-                  { k: 'Zona', v: 'Córdoba', w: '60%' }
-                ].map((it) => (
-                  <div
-                    key={it.k}
-                    className="rounded-2xl border border-white/10 bg-black/15 px-3 py-3"
-                  >
-                    <div className="text-[10px] uppercase tracking-[0.20em] text-white/50">
-                      {it.k}
-                    </div>
-                    <div className="mt-1 text-[13px] sm:text-[14px] font-semibold text-white/85">
-                      <span
-                        className="bg-clip-text text-transparent"
-                        style={{
-                          backgroundImage:
-                            'linear-gradient(90deg, rgba(255,246,238,0.95), rgba(222,174,97,0.92), rgba(157,112,63,0.90))'
-                        }}
-                      >
-                        {it.v}
-                      </span>
-                    </div>
-                    <div className="mt-2 h-1.5 rounded-full bg-white/10 overflow-hidden">
-                      <div
-                        className="h-full rounded-full bg-[rgba(222,174,97,0.55)] animate-[bar_2.1s_ease-in-out_infinite]"
-                        style={{ width: it.w }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* perfiles / alcance */}
-              <div className="px-5 pb-6 pt-5">
-                <div className="grid gap-2.5">
-                  {features.map((r) => (
-                    <div
-                      key={r.title}
-                      className="flex items-start gap-3 rounded-2xl border border-white/10 px-4 py-3 bg-black/15"
-                    >
-                      <div
-                        className="mt-0.5 h-9 w-9 rounded-2xl border bg-white/5 flex items-center justify-center"
-                        style={{ borderColor: 'rgba(222,174,97,0.20)' }}
-                      >
-                        <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--pc-oro)] shadow-[0_0_10px_rgba(222,174,97,0.35)]" />
-                      </div>
-
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-2">
-                          <div className="text-[13px] sm:text-sm font-semibold text-white/85">
-                            {r.title}
-                          </div>
-                          <span
-                            className="text-[10px] uppercase tracking-[0.18em] rounded-full px-2 py-0.5 border bg-black/10"
-                            style={{
-                              borderColor: 'rgba(157,112,63,0.22)',
-                              color: 'rgba(245,214,187,0.70)'
-                            }}
-                          >
-                            {r.tag}
-                          </span>
-                        </div>
-
-                        <div className="mt-1 text-[12px] sm:text-[13px] text-white/65 leading-relaxed">
-                          {r.desc}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* shimmer separator */}
-                <div className="mt-5 h-px w-full bg-white/10 relative overflow-hidden rounded-full">
-                  <div className="absolute -left-1/2 top-0 h-full w-1/2 bg-[rgba(222,174,97,0.45)] blur-md animate-[rayline_2.2s_ease-out_infinite]" />
-                </div>
-
-                <div className="mt-4 text-[12px] text-white/55">
-                  La idea es simple: elegís el perfil que necesitás y te
-                  mostramos todo antes de confirmar.
-                </div>
-              </div>
-
-              {/* corner accents */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -top-16 -right-16 size-64 rounded-full blur-3xl opacity-35"
-                style={{
-                  background:
-                    'radial-gradient(circle at 30% 30%, rgba(222,174,97,0.26), rgba(0,0,0,0) 70%)'
-                }}
-              />
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -bottom-16 -left-16 size-64 rounded-full blur-3xl opacity-30"
-                style={{
-                  background:
-                    'radial-gradient(circle at 30% 30%, rgba(245,214,187,0.18), rgba(0,0,0,0) 72%)'
-                }}
-              />
-            </motion.div>
-          </motion.div>
           {/* Left */}
           <motion.div
             variants={enter}
@@ -356,26 +209,28 @@ const Banner = ({
             custom={0}
             className="text-left"
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-xl">
+            <div className="inline-flex flex-wrap items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-xl">
               <span className="font-bignoodle tracking-[0.22em] text-[11px] uppercase crema">
-                mi pc lista · presupuestos por perfil
+                mi pc lista · pcs armadas a pedido
               </span>
               <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--pc-oro)] shadow-[0_0_12px_rgba(222,174,97,0.45)]" />
               <span className="text-[12px] text-white/70">
-                Estudio · Trabajo · Exigencia
+                Estudio · Trabajo · Pro
               </span>
+              <span className="h-1.5 w-1.5 rounded-full bg-white/20" />
+              <span className="text-[12px] text-white/60">Córdoba Capital</span>
             </div>
 
             <h2 className="mt-5 text-3xl sm:text-4xl md:text-5xl leading-[1.06]">
-              <span className="titulo block">
-                ¡Tu PC según lo que necesitás!
+              <span className="titulo block">¿Necesitás una PC nueva?</span>
+              <span className="titulo block mt-1">
+                Te la armamos lista para usar.
               </span>
-              <span className="cuerpo block mt-2 text-white/80 text-[15px] sm:text-base md:text-lg max-w-xl">
-                Seleccionás un perfil, revisás
-                especificaciones/servicios/garantías y realizás el pedido.
-                <span className="ml-2 crema">
-                  Pedidos dentro de Córdoba Capital.
-                </span>
+
+              <span className="cuerpo block mt-3 text-white/80 text-[15px] sm:text-base md:text-lg max-w-xl">
+                Elegís un perfil y te enviamos una propuesta completa de
+                componentes. Incluye armado, instalación, drivers y pruebas
+                antes de la entrega.
               </span>
             </h2>
 
@@ -406,7 +261,7 @@ const Banner = ({
 
                   <div className="min-w-0">
                     <div className="text-[11px] uppercase tracking-[0.22em] text-white/55">
-                      cómo funciona
+                      proceso de compra
                     </div>
 
                     <div className="mt-2 text-[14px] sm:text-[15px] text-white/80 leading-relaxed">
@@ -479,7 +334,7 @@ const Banner = ({
                       'hover:bg-[rgba(125,137,52,0.16)] transition'
                     )}
                   >
-                    WhatsApp directo
+                    Pedir presupuesto por WhatsApp
                   </button>
                 </a>
               ) : (
@@ -498,9 +353,157 @@ const Banner = ({
               )}
             </div>
           </motion.div>
+
+          {/* Right: “Proof / Flow card” */}
+          <motion.div
+            variants={enter}
+            initial="hidden"
+            animate={inView ? 'show' : 'hidden'}
+            custom={0.08}
+            className="relative"
+          >
+            <div
+              aria-hidden
+              className="absolute -inset-6 rounded-[28px] blur-2xl opacity-55"
+              style={{
+                background:
+                  'radial-gradient(circle at 30% 30%, rgba(222,174,97,0.22), rgba(157,112,63,0.10) 40%, rgba(0,0,0,0) 72%)'
+              }}
+            />
+
+            <motion.div
+              variants={floaty}
+              initial="initial"
+              animate="animate"
+              className="relative rounded-[28px] border border-white/10 bg-white/5 backdrop-blur-xl shadow-[0_30px_90px_rgba(0,0,0,0.55)] overflow-hidden"
+            >
+              {/* top bar */}
+              <div className="flex items-center justify-between px-5 pt-5">
+                <div className="flex items-center gap-2">
+                  <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--pc-oro)] shadow-[0_0_12px_rgba(222,174,97,0.45)]" />
+                  <span className="text-[12px] uppercase tracking-[0.22em] text-white/70 font-messina">
+                    pc nueva
+                  </span>
+                </div>
+
+                <span
+                  className="rounded-full px-3 py-1 text-[12px] border bg-black/20"
+                  style={{
+                    borderColor: 'rgba(222,174,97,0.22)',
+                    color: 'rgba(255,246,238,0.72)'
+                  }}
+                >
+                  armado a pedido
+                </span>
+              </div>
+
+              {/* KPI row */}
+              <div className="px-5 pt-4 grid grid-cols-3 gap-2">
+                {[
+                  { k: 'Perfiles', v: '3', w: '76%' },
+                  { k: 'Setup', v: 'Sistema + drivers', w: '68%' },
+                  { k: 'Entrega', v: 'Con checklist', w: '60%' }
+                ].map((it) => (
+                  <div
+                    key={it.k}
+                    className="rounded-2xl border border-white/10 bg-black/15 px-3 py-3"
+                  >
+                    <div className="text-[10px] uppercase tracking-[0.20em] text-white/50">
+                      {it.k}
+                    </div>
+                    <div className="mt-1 text-[13px] sm:text-[14px] font-semibold text-white/85">
+                      <span
+                        className="bg-clip-text text-transparent"
+                        style={{
+                          backgroundImage:
+                            'linear-gradient(90deg, rgba(255,246,238,0.95), rgba(222,174,97,0.92), rgba(157,112,63,0.90))'
+                        }}
+                      >
+                        {it.v}
+                      </span>
+                    </div>
+                    <div className="mt-2 h-1.5 rounded-full bg-white/10 overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-[rgba(222,174,97,0.55)] animate-[bar_2.1s_ease-in-out_infinite]"
+                        style={{ width: it.w }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* perfiles / incluye */}
+              <div className="px-5 pb-6 pt-5">
+                <div className="grid gap-2.5">
+                  {features.map((r) => (
+                    <div
+                      key={r.title}
+                      className="flex items-start gap-3 rounded-2xl border border-white/10 px-4 py-3 bg-black/15"
+                    >
+                      <div
+                        className="mt-0.5 h-9 w-9 rounded-2xl border bg-white/5 flex items-center justify-center"
+                        style={{ borderColor: 'rgba(222,174,97,0.20)' }}
+                      >
+                        <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--pc-oro)] shadow-[0_0_10px_rgba(222,174,97,0.35)]" />
+                      </div>
+
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <div className="text-[13px] sm:text-sm font-semibold text-white/85">
+                            {r.title}
+                          </div>
+                          <span
+                            className="text-[10px] uppercase tracking-[0.18em] rounded-full px-2 py-0.5 border bg-black/10"
+                            style={{
+                              borderColor: 'rgba(157,112,63,0.22)',
+                              color: 'rgba(245,214,187,0.70)'
+                            }}
+                          >
+                            {r.tag}
+                          </span>
+                        </div>
+
+                        <div className="mt-1 text-[12px] sm:text-[13px] text-white/65 leading-relaxed">
+                          {r.desc}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* shimmer separator */}
+                <div className="mt-5 h-px w-full bg-white/10 relative overflow-hidden rounded-full">
+                  <div className="absolute -left-1/2 top-0 h-full w-1/2 bg-[rgba(222,174,97,0.45)] blur-md animate-[rayline_2.2s_ease-out_infinite]" />
+                </div>
+
+                <div className="mt-4 text-[12px] text-white/55">
+                  Te mandamos la propuesta completa y la dejamos lista para
+                  usar. Si querés, lo coordinamos por WhatsApp.
+                </div>
+              </div>
+
+              {/* corner accents */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -top-16 -right-16 size-64 rounded-full blur-3xl opacity-35"
+                style={{
+                  background:
+                    'radial-gradient(circle at 30% 30%, rgba(222,174,97,0.26), rgba(0,0,0,0) 70%)'
+                }}
+              />
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -bottom-16 -left-16 size-64 rounded-full blur-3xl opacity-30"
+                style={{
+                  background:
+                    'radial-gradient(circle at 30% 30%, rgba(245,214,187,0.18), rgba(0,0,0,0) 72%)'
+                }}
+              />
+            </motion.div>
+          </motion.div>
         </div>
 
-        {/* ===== Marquee (servicios / componentes de la propuesta) ===== */}
+        {/* ===== Marquee ===== */}
         <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl overflow-hidden">
           <div className="relative">
             <div

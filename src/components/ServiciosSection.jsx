@@ -72,7 +72,7 @@ function scrollToHash(hash) {
 }
 
 export default function ServiciosSection({
-  id = 'servicios',
+  id = 'perfiles',
   whatsappUrl = '',
   contactoHash = '#contacto',
   // Override opcional si después querés traer perfiles desde API/JSON:
@@ -297,7 +297,7 @@ export default function ServiciosSection({
               </div>
 
               <h2 className="mt-5 text-3xl sm:text-4xl md:text-5xl leading-[1.06]">
-                <span className="titulo block">
+                <span className="titulo block uppercase">
                   Elegí el perfil y pedí tu PC lista
                 </span>
               </h2>

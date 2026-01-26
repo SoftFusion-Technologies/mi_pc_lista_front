@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { AuthProvider } from './AuthContext';
 // cambio agregado por Benjamin Orellana
 import NotFound from './Pages/NotFound.jsx';
+import ScrollToTop from './components/ScrollToTop.jsx';
 export default function App() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -15,6 +16,15 @@ export default function App() {
     <AuthProvider>
       {/* El Navbar se mostrará en todas las páginas si está fuera de <Routes> */}
       <Navbar />
+      <ScrollToTop
+        top={0}
+        behavior="auto"
+        exclude={['/tickets', '/list']} // ejemplo
+        animate
+        durationMs={520}
+        easing="easeOutCubic"
+        showOverlay
+      />
       <Routes>
         {/* Ruta pública para Login */}
         {/* Rutas protegidas */}
