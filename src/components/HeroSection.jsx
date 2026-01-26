@@ -1,7 +1,11 @@
-import React, { useMemo, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import React, { useMemo, useRef, useState, useEffect } from 'react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { NavLink } from 'react-router-dom';
 import routes from '../Routes/Rutas';
+import pcpro1 from '../assets/hero/pcpro.webp';
+import pcestudio from '../assets/hero/pcestudio.webp';
+import pctrabajo from '../assets/hero/pctrabajo.webp';
+import { FaMousePointer } from 'react-icons/fa';
 
 /**
  * HERO — Mi PC Lista
@@ -41,8 +45,73 @@ const smash = {
   }
 };
 
+const clickBox = { left: '75.385%', top: '29.048%' };
+
 // Helpers
 const cx = (...c) => c.filter(Boolean).join(' ');
+
+function HeroScreenCarousel({ images, intervalMs = 3200 }) {
+  const safeImages = useMemo(
+    () => (Array.isArray(images) ? images.filter(Boolean) : []),
+    [images]
+  );
+
+  const [i, setI] = useState(0);
+
+  useEffect(() => {
+    if (safeImages.length <= 1) return;
+    const t = setInterval(() => {
+      setI((prev) => (prev + 1) % safeImages.length);
+    }, intervalMs);
+    return () => clearInterval(t);
+  }, [safeImages.length, intervalMs]);
+
+  if (!safeImages.length) return null;
+
+  return (
+    <div className="relative h-full w-full">
+      {/* “UI chrome” arriba (barra + dots) para que se sienta pantalla real */}
+      <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between px-2.5 py-1.5">
+        <div className="flex items-center gap-1.5">
+          <span className="h-2 w-2 rounded-full bg-white/25" />
+          <span className="h-2 w-2 rounded-full bg-white/18" />
+          <span className="h-2 w-2 rounded-full bg-white/12" />
+        </div>
+
+        <div className="flex items-center gap-1">
+          {safeImages.map((_, idx) => (
+            <span
+              key={idx}
+              className={[
+                'h-1.5 w-1.5 rounded-full transition-opacity',
+                idx === i ? 'bg-white/55 opacity-100' : 'bg-white/35 opacity-45'
+              ].join(' ')}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="absolute inset-0">
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={safeImages[i]}
+            src={safeImages[i]}
+            alt=""
+            className="h-full w-full object-cover"
+            initial={{ opacity: 0, x: 10, scale: 0.995 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: -10, scale: 0.995 }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+            draggable={false}
+          />
+        </AnimatePresence>
+
+        {/* “glow” suave para integrarlo al estilo oro/marrón */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/25" />
+      </div>
+    </div>
+  );
+}
 
 const HeroSection = () => {
   // anim del “golpe” cuando entra en viewport
@@ -158,25 +227,35 @@ const HeroSection = () => {
       <path d="M170 210h120" stroke="rgba(245,214,187,0.18)" stroke-width="2" stroke-linecap="round"/>
 
       <!-- base -->
-      <path d="M240 270h80l12 26H228l12-26Z" fill="rgba(157,112,63,0.18)" stroke="rgba(222,174,97,0.28)"/>
-      <rect x="210" y="296" width="140" height="18" rx="9" fill="rgba(245,214,187,0.10)" stroke="rgba(245,214,187,0.16)"/>
-
-      <!-- check badge -->
-      <g transform="translate(340 70)">
-        <circle cx="52" cy="52" r="46" fill="rgba(222,174,97,0.12)" stroke="rgba(222,174,97,0.35)" stroke-width="2"/>
-        <path d="M34 54l12 12 26-30" stroke="url(#gold)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-      </g>
-
-      <!-- small floating chips -->
-      <g opacity="0.9">
-        <rect x="70" y="285" width="62" height="62" rx="16" fill="rgba(61,39,38,0.35)" stroke="rgba(222,174,97,0.24)"/>
-        <path d="M96 302h10M96 316h18M96 330h14" stroke="rgba(245,214,187,0.26)" stroke-width="2" stroke-linecap="round"/>
-        <rect x="408" y="286" width="70" height="70" rx="18" fill="rgba(61,39,38,0.32)" stroke="rgba(157,112,63,0.22)"/>
-        <path d="M432 312h22" stroke="rgba(245,214,187,0.22)" stroke-width="2" stroke-linecap="round"/>
-        <path d="M420 338l10-10 10 10 14-14" stroke="rgba(222,174,97,0.30)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-      </g>
+      <path d="M240 270h60l12 26H228l12-26Z" fill="rgba(157,112,63,0.18)" stroke="rgba(222,174,97,0.28)"/>
+      <rect x="200" y="296" width="140" height="18" rx="9" fill="rgba(245,214,187,0.10)" stroke="rgba(245,214,187,0.16)"/>
+ 
     </svg>
   `);
+
+  const heroFrames = [pcpro1, pcestudio, pctrabajo];
+
+  // Coordenadas exactas de la pantalla interna del SVG (en %)
+  const screenBox = {
+    left: '28.846%',
+    top: '26.190%',
+    width: '44.231%',
+    height: '28.571%'
+  };
+
+  const chipLeftBox = {
+    left: '13.462%',
+    top: '67.857%',
+    width: '11.923%',
+    height: '14.762%'
+  };
+
+  const chipRightBox = {
+    left: '78.462%',
+    top: '68.095%',
+    width: '13.462%',
+    height: '16.667%'
+  };
 
   return (
     <section
@@ -256,11 +335,115 @@ const HeroSection = () => {
 
       {/* ====== Orbital system (PC icons) ====== */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        {/* ring guides */}
-        <div className="absolute left-1/2 top-1/2 size-[74vmin] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[rgba(245,214,187,0.14)]" />
-        <div className="absolute left-1/2 top-1/2 size-[56vmin] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[rgba(245,214,187,0.10)]" />
+        {/* soft center halo */}
+        <div
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+          style={{
+            width: '52vmin',
+            height: '52vmin',
+            background:
+              'radial-gradient(circle at 50% 50%, rgba(222,174,97,0.10), rgba(0,0,0,0) 62%)',
+            filter: 'blur(0.5px)'
+          }}
+        />
 
-        {/* ring 1 (clockwise) */}
+        {/* ===== Ring Guides + Glow layers ===== */}
+        {/* Outer ring container */}
+        <div className="absolute left-1/2 top-1/2 size-[74vmin] -translate-x-1/2 -translate-y-1/2">
+          {/* base ring */}
+          <div className="absolute inset-0 rounded-full border border-[rgba(245,214,187,0.14)]" />
+
+          {/* dashed subtle ring */}
+          <div
+            className="absolute inset-0 rounded-full"
+            style={{
+              border: '1px dashed rgba(245,214,187,0.10)',
+              opacity: 0.65
+            }}
+          />
+
+          {/* ring “breathing” glow */}
+          <div
+            className="absolute inset-[-10px] rounded-full"
+            style={{
+              background:
+                'radial-gradient(circle, rgba(222,174,97,0.12), rgba(0,0,0,0) 62%)',
+              filter: 'blur(10px)',
+              animation: 'ringPulse 4.6s ease-in-out infinite'
+            }}
+          />
+
+          {/* moving bright arc (sweep) */}
+          <div
+            className="absolute inset-0 rounded-full"
+            style={{
+              WebkitMaskImage:
+                'radial-gradient(circle, transparent 62%, #000 63%, #000 66%, transparent 67%)',
+              maskImage:
+                'radial-gradient(circle, transparent 62%, #000 63%, #000 66%, transparent 67%)',
+              background:
+                'conic-gradient(from 0deg, rgba(0,0,0,0) 0 82%, rgba(222,174,97,0.20) 86%, rgba(245,214,187,0.18) 92%, rgba(0,0,0,0) 100%)',
+              filter: 'blur(0.6px)',
+              animation: 'glowRotate 10s linear infinite'
+            }}
+          />
+        </div>
+
+        {/* Inner ring container */}
+        <div className="absolute left-1/2 top-1/2 size-[56vmin] -translate-x-1/2 -translate-y-1/2">
+          <div className="absolute inset-0 rounded-full border border-[rgba(245,214,187,0.10)]" />
+
+          <div
+            className="absolute inset-[-10px] rounded-full"
+            style={{
+              background:
+                'radial-gradient(circle, rgba(222,174,97,0.08), rgba(0,0,0,0) 62%)',
+              filter: 'blur(10px)',
+              animation: 'ringPulse 5.4s ease-in-out infinite',
+              opacity: 0.9
+            }}
+          />
+
+          <div
+            className="absolute inset-0 rounded-full"
+            style={{
+              WebkitMaskImage:
+                'radial-gradient(circle, transparent 60%, #000 61%, #000 64%, transparent 65%)',
+              maskImage:
+                'radial-gradient(circle, transparent 60%, #000 61%, #000 64%, transparent 65%)',
+              background:
+                'conic-gradient(from 140deg, rgba(0,0,0,0) 0 78%, rgba(222,174,97,0.16) 84%, rgba(245,214,187,0.14) 90%, rgba(0,0,0,0) 100%)',
+              filter: 'blur(0.6px)',
+              animation: 'glowRotate 14s linear infinite reverse'
+            }}
+          />
+        </div>
+
+        {/* tiny sparkles (static positions, subtle twinkle) */}
+        {[
+          { l: '18%', t: '28%', s: 6, d: 0.0 },
+          { l: '78%', t: '20%', s: 5, d: 0.7 },
+          { l: '85%', t: '62%', s: 6, d: 0.35 },
+          { l: '22%', t: '72%', s: 5, d: 0.9 }
+        ].map((st, idx) => (
+          <div
+            key={idx}
+            className="absolute rounded-full"
+            style={{
+              left: st.l,
+              top: st.t,
+              width: st.s,
+              height: st.s,
+              background: 'rgba(245,214,187,0.20)',
+              boxShadow:
+                '0 0 10px rgba(222,174,97,0.18), 0 0 18px rgba(245,214,187,0.10)',
+              transform: 'translate(-50%, -50%)',
+              animation: `sparkle 3.8s ease-in-out ${st.d}s infinite`
+            }}
+          />
+        ))}
+
+        {/* ===== ring 1 (clockwise) ===== */}
         <div className="absolute left-1/2 top-1/2 size-[74vmin] -translate-x-1/2 -translate-y-1/2 animate-[orbit_28s_linear_infinite]">
           {[
             { pos: 'top', svg: iconChip, s: 42 },
@@ -288,14 +471,14 @@ const HeroSection = () => {
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
                 filter:
-                  'drop-shadow(0 0 14px rgba(222,174,97,0.18)) drop-shadow(0 0 22px rgba(245,214,187,0.12))',
+                  'drop-shadow(0 0 12px rgba(222,174,97,0.22)) drop-shadow(0 0 22px rgba(245,214,187,0.12))',
                 transform: 'translate(-50%,-50%) rotate(10deg)'
               }}
             />
           ))}
         </div>
 
-        {/* ring 2 (counter) */}
+        {/* ===== ring 2 (counter) ===== */}
         <div className="absolute left-1/2 top-1/2 size-[56vmin] -translate-x-1/2 -translate-y-1/2 animate-[orbit_reverse_36s_linear_infinite]">
           {[
             { pos: 'top', svg: iconShield, s: 36 },
@@ -316,7 +499,8 @@ const HeroSection = () => {
                 backgroundImage: `url("data:image/svg+xml;utf8,${it.svg}")`,
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
-                filter: 'drop-shadow(0 0 12px rgba(222,174,97,0.16))',
+                filter:
+                  'drop-shadow(0 0 10px rgba(222,174,97,0.20)) drop-shadow(0 0 18px rgba(245,214,187,0.10))',
                 transform: 'translate(-50%,-50%) rotate(10deg)'
               }}
             />
@@ -337,11 +521,11 @@ const HeroSection = () => {
               className="inline-flex items-center gap-2 rounded-full border border-[rgba(245,214,187,0.18)] bg-[rgba(255,246,238,0.04)] px-4 py-2 backdrop-blur-md"
             >
               <span className="font-bignoodle tracking-[0.22em] text-[11px] uppercase crema">
-                servicio técnico premium
+                Servicio técnico premium para PC y notebooks
               </span>
               <span className="h-1.5 w-1.5 rounded-full bg-amarillo shadow-[0_0_12px_rgba(222,174,97,0.45)]" />
               <span className="text-[12px] text-[rgba(255,246,238,0.70)]">
-                Diagnóstico claro · Soluciones reales
+                Te decimos qué tiene tu PC y lo dejamos andando como debe{' '}
               </span>
             </motion.div>
 
@@ -353,7 +537,7 @@ const HeroSection = () => {
               className="mt-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.04]"
             >
               <span className="titulo block">
-                TU PC
+                MI PC
                 <span className="ml-3 inline-block">
                   <motion.span
                     ref={hitRef}
@@ -388,8 +572,8 @@ const HeroSection = () => {
 
               <span className="cuerpo block mt-3 text-[15px] sm:text-base md:text-lg text-[rgba(255,246,238,0.74)] max-w-xl">
                 Reparación, optimización y mantenimiento con foco en
-                rendimiento, estabilidad y seguridad. Sin vueltas: te explicamos
-                el problema y la solución con total transparencia.
+                rendimiento, temperatura y estabilidad. Presupuesto antes de
+                avanzar y reporte claro de lo que se hizo, por qué y qué mejora.
               </span>
             </motion.h1>
 
@@ -486,10 +670,16 @@ const HeroSection = () => {
               className="mt-8 flex flex-wrap items-center gap-2.5"
             >
               {[
-                { t: 'Diagnóstico claro', s: 'rgba(222,174,97,0.16)' },
-                { t: 'Optimización real', s: 'rgba(245,214,187,0.14)' },
-                { t: 'Seguridad y backup', s: 'rgba(157,112,63,0.16)' },
-                { t: 'Soporte con seguimiento', s: 'rgba(222,174,97,0.14)' }
+                {
+                  t: 'Presupuesto antes de avanzar',
+                  s: 'rgba(222,174,97,0.16)'
+                },
+                {
+                  t: 'Optimización + rendimiento',
+                  s: 'rgba(245,214,187,0.14)'
+                },
+                { t: 'Backup y seguridad', s: 'rgba(157,112,63,0.16)' },
+                { t: 'Seguimiento y reporte', s: 'rgba(222,174,97,0.14)' }
               ].map((c) => (
                 <span
                   key={c.t}
@@ -513,8 +703,8 @@ const HeroSection = () => {
               transition={{ delay: 0.14 }}
               className="mt-6 text-[12px] sm:text-[13px] text-[rgba(255,246,238,0.58)]"
             >
-              Consejo: si tu PC está lenta, se apaga, se traba o “anda cuando
-              quiere”, lo resolvemos.
+              Si está lenta, se reinicia, se traba o levanta temperatura: lo
+              diagnosticamos, lo dejamos estable y te explicamos el por qué.
             </motion.p>
           </div>
 
@@ -568,14 +758,211 @@ const HeroSection = () => {
                         'radial-gradient(60% 60% at 40% 30%, rgba(222,174,97,0.12), rgba(0,0,0,0) 70%)'
                     }}
                   />
-                  <div
-                    className="aspect-[520/420] w-full"
-                    style={{
-                      backgroundImage: `url("data:image/svg+xml;utf8,${heroIllustration}")`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center'
-                    }}
-                  />
+
+                  <div className="relative aspect-[520/420] w-full">
+                    {/* Overlay: mouse click indicator (arriba de TODO) */}
+                    <div
+                      className="absolute z-[30] pointer-events-none"
+                      style={{
+                        left: clickBox.left,
+                        top: clickBox.top,
+                        transform: 'translate(-50%, -50%)'
+                      }}
+                    >
+                      <div className="relative">
+                        {/* Pulse rings */}
+                        <motion.span
+                          className="absolute inset-0 rounded-full"
+                          style={{
+                            boxShadow: '0 0 0 1px rgba(222,174,97,0.28)'
+                          }}
+                          animate={{ scale: [1, 1.35], opacity: [0.55, 0] }}
+                          transition={{
+                            duration: 1.2,
+                            repeat: Infinity,
+                            ease: 'easeOut'
+                          }}
+                        />
+                        <motion.span
+                          className="absolute inset-0 rounded-full"
+                          style={{
+                            boxShadow: '0 0 0 1px rgba(222,174,97,0.20)'
+                          }}
+                          animate={{ scale: [1, 1.6], opacity: [0.35, 0] }}
+                          transition={{
+                            duration: 1.2,
+                            repeat: Infinity,
+                            ease: 'easeOut',
+                            delay: 0.18
+                          }}
+                        />
+
+                        {/* Core bubble */}
+                        <div
+                          className="relative grid place-items-center rounded-full border backdrop-blur-sm"
+                          style={{
+                            width: 'clamp(52px, 9vw, 86px)',
+                            height: 'clamp(52px, 9vw, 86px)',
+                            background: 'rgba(222,174,97,0.10)',
+                            borderColor: 'rgba(222,174,97,0.35)',
+                            boxShadow: '0 18px 50px rgba(0,0,0,0.45)'
+                          }}
+                        >
+                          {/* “click” micro motion */}
+                          <motion.div
+                            animate={{ y: [0, 2, 0], rotate: [-6, -4, -6] }}
+                            transition={{
+                              duration: 1.15,
+                              repeat: Infinity,
+                              ease: 'easeInOut'
+                            }}
+                          >
+                            <FaMousePointer
+                              style={{ color: 'rgba(245,214,187,0.85)' }}
+                              className="text-[18px] sm:text-[22px]"
+                            />
+                          </motion.div>
+
+                          {/* tiny click dot */}
+                          <motion.span
+                            className="absolute right-[18%] top-[20%] h-2 w-2 rounded-full"
+                            style={{ background: 'rgba(222,174,97,0.55)' }}
+                            animate={{
+                              scale: [1, 0.6, 1],
+                              opacity: [0.9, 0.45, 0.9]
+                            }}
+                            transition={{
+                              duration: 0.8,
+                              repeat: Infinity,
+                              ease: 'easeInOut'
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Chips flotantes (arriba del SVG y carrusel) */}
+                    <motion.div
+                      className="absolute z-[25] pointer-events-none"
+                      style={chipLeftBox}
+                      animate={{ y: [0, -4, 0] }}
+                      transition={{
+                        duration: 3.2,
+                        repeat: Infinity,
+                        ease: 'easeInOut'
+                      }}
+                    >
+                      <div
+                        className="h-full w-full rounded-2xl border backdrop-blur-sm"
+                        style={{
+                          background: 'rgba(61,39,38,0.30)',
+                          borderColor: 'rgba(222,174,97,0.24)',
+                          boxShadow: '0 18px 45px rgba(0,0,0,0.40)'
+                        }}
+                      >
+                        <div className="h-full w-full p-[18%] flex flex-col justify-between">
+                          <div
+                            className="h-1 rounded-full"
+                            style={{ background: 'rgba(245,214,187,0.26)' }}
+                          />
+                          <div
+                            className="h-1 rounded-full w-[80%]"
+                            style={{ background: 'rgba(245,214,187,0.22)' }}
+                          />
+                          <div
+                            className="h-1 rounded-full w-[65%]"
+                            style={{ background: 'rgba(245,214,187,0.18)' }}
+                          />
+                        </div>
+                      </div>
+                    </motion.div>
+
+                    <motion.div
+                      className="absolute z-[25] pointer-events-none"
+                      style={chipRightBox}
+                      animate={{ y: [0, -5, 0] }}
+                      transition={{
+                        duration: 3.6,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                        delay: 0.35
+                      }}
+                    >
+                      <div
+                        className="h-full w-full rounded-2xl border backdrop-blur-sm"
+                        style={{
+                          background: 'rgba(61,39,38,0.28)',
+                          borderColor: 'rgba(157,112,63,0.22)',
+                          boxShadow: '0 18px 45px rgba(0,0,0,0.40)'
+                        }}
+                      >
+                        <div className="h-full w-full p-[16%] flex flex-col justify-between">
+                          <div
+                            className="h-1 rounded-full w-[70%]"
+                            style={{ background: 'rgba(245,214,187,0.22)' }}
+                          />
+                          <div className="flex items-center justify-between gap-2">
+                            <span
+                              className="h-1 rounded-full w-[55%]"
+                              style={{ background: 'rgba(245,214,187,0.18)' }}
+                            />
+                            <span
+                              className="h-1 rounded-full w-[25%]"
+                              style={{ background: 'rgba(222,174,97,0.22)' }}
+                            />
+                          </div>
+                          <motion.div
+                            className="h-2 w-2 rounded-full self-end"
+                            style={{ background: 'rgba(222,174,97,0.30)' }}
+                            animate={{
+                              scale: [1, 0.75, 1],
+                              opacity: [0.9, 0.55, 0.9]
+                            }}
+                            transition={{
+                              duration: 1.1,
+                              repeat: Infinity,
+                              ease: 'easeInOut'
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </motion.div>
+
+                    {/* Fondo SVG */}
+                    <div
+                      className="absolute inset-0"
+                      style={{
+                        backgroundImage: `url("data:image/svg+xml;utf8,${heroIllustration}")`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center'
+                      }}
+                    />
+
+                    {/* Overlay: “pantalla” del monitor */}
+                    <div
+                      className="absolute overflow-hidden rounded-[14px]"
+                      style={screenBox}
+                    >
+                      <div
+                        className="h-full w-full"
+                        style={{
+                          boxShadow: '0 14px 40px rgba(0,0,0,0.45)',
+                          background: 'rgba(10,10,10,0.25)'
+                        }}
+                      >
+                        <HeroScreenCarousel
+                          images={heroFrames}
+                          intervalMs={3200}
+                        />
+                      </div>
+
+                      {/* borde fino encima para que no “tape” el stroke del svg */}
+                      <div
+                        className="pointer-events-none absolute inset-0 rounded-[14px] ring-1"
+                        style={{ color: 'rgba(222,174,97,0.22)' }}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -584,23 +971,23 @@ const HeroSection = () => {
                 <div className="grid gap-2.5">
                   {[
                     {
-                      k: 'Rendimiento',
-                      v: 'Optimización de inicio, limpieza y ajustes finos.',
+                      k: 'Rendimiento real',
+                      v: 'Limpieza, ajustes finos y optimización de arranque para que responda rápido.',
                       tag: 'PRO'
                     },
                     {
-                      k: 'Estabilidad',
-                      v: 'Diagnóstico de fallas, temperaturas y hardware.',
+                      k: 'Estabilidad y temperaturas',
+                      v: 'Detectamos fallas, cuelgues y sobrecalentamiento. Pruebas y control térmico.',
                       tag: 'CHECK'
                     },
                     {
-                      k: 'Seguridad',
-                      v: 'Backup, antivirus, hardening y buenas prácticas.',
+                      k: 'Seguridad + backup',
+                      v: 'Respaldo de datos, protección y recomendaciones para evitar pérdidas y malware.',
                       tag: 'SAFE'
                     },
                     {
-                      k: 'Transparencia',
-                      v: 'Te mostramos qué se hizo, por qué y cuánto mejora.',
+                      k: 'Transparencia total',
+                      v: 'Te entregamos detalle por escrito: qué se hizo, por qué y el resultado esperado.',
                       tag: 'CLEAR'
                     }
                   ].map((r) => (
@@ -645,19 +1032,19 @@ const HeroSection = () => {
                     className="rounded-full border px-3 py-1 bg-[rgba(255,246,238,0.03)]"
                     style={{ borderColor: 'rgba(245,214,187,0.14)' }}
                   >
-                    Atención cuidadosa
+                    Cuidado en los detalles
                   </span>
                   <span
                     className="rounded-full border px-3 py-1 bg-[rgba(255,246,238,0.03)]"
                     style={{ borderColor: 'rgba(245,214,187,0.14)' }}
                   >
-                    Detalles por escrito
+                    Reporte por escrito
                   </span>
                   <span
                     className="rounded-full border px-3 py-1 bg-[rgba(255,246,238,0.03)]"
                     style={{ borderColor: 'rgba(245,214,187,0.14)' }}
                   >
-                    Resultados medibles
+                    Resultados comprobables
                   </span>
                 </div>
               </div>
@@ -707,6 +1094,20 @@ const HeroSection = () => {
         }
         @keyframes orbit_reverse {
           to { transform: translate(-50%, -50%) rotate(-360deg); }
+        }
+        @keyframes ringPulse {
+          0%, 100% { opacity: .55; transform: translate(-50%, -50%) scale(1); }
+          50% { opacity: .9; transform: translate(-50%, -50%) scale(1.015); }
+        }
+
+        @keyframes glowRotate {
+          from { transform: translate(-50%, -50%) rotate(0deg); }
+          to   { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes sparkle {
+          0%, 100% { opacity: .15; transform: translate(-50%, -50%) scale(.9); }
+          50% { opacity: .55; transform: translate(-50%, -50%) scale(1.05); }
         }
         .animate-[orbit_28s_linear_infinite] {
           animation: orbit 28s linear infinite;

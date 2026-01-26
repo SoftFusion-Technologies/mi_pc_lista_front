@@ -136,13 +136,6 @@ const shellSkin =
                     Córdoba Capital
                   </span>
                 </div>
-
-                <div
-                  className={`hidden lg:block text-[12px] ${textMuted} mt-1`}
-                >
-                  PCs listas para estudio y trabajo • Armadas a pedido •
-                  Garantía
-                </div>
               </div>
             </NavLink>
 
