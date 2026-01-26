@@ -1,32 +1,21 @@
 import { Routes, Route, Link, Navigate } from 'react-router-dom';
-import { lazy } from 'react';
 import Navbar from './Layout/Navbar.jsx';
 import routes from './Routes/Rutas.jsx';
 import Footer from './Layout/Footer.jsx';
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 
 import { AuthProvider } from './AuthContext';
 // cambio agregado por Benjamin Orellana
 // aqui dentro ponemos las rutas en las que no queremos mostrar el nav
-import { hiddenNavbarRoutes } from './Helpers/uiConfig';
 
 export default function App() {
-  const { pathname } = useLocation();
-
-  const token = localStorage.getItem('token');
-  const location = useLocation();
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location.pathname]);
-
-  const hideNavbar = hiddenNavbarRoutes.some((route) =>
-    pathname.startsWith(route)
-  );
   return (
     <AuthProvider>
       {/* El Navbar se mostrará en todas las páginas si está fuera de <Routes> */}
-      {!hideNavbar && <Navbar />}
+      <Navbar />
       <Routes>
         {/* Ruta pública para Login */}
         {/* Rutas protegidas */}
@@ -34,8 +23,6 @@ export default function App() {
           <Route key={index} path={route.path} element={route.element} />
         ))}
         {/* Ruta para redirigir si se intenta acceder a la raíz sin estar logueado */}
-        <Route path="/" element={!token ? <Navigate to="/login" /> : null} />
-        {/* Ruta para 404 */}
         <Route path="*" element={<div>404 - Página no encontrada</div>} />
       </Routes>
       <Footer />

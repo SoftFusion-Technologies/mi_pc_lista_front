@@ -1,9 +1,4 @@
-import Ubication from '../../components/Ubication';
-import PlanesDePrecios from '../../components/PlanesDePrecios';
-import SeccionTestimonios from '../../components/SeccionTestimonios';
 import HeroSection from '../../components/HeroSection';
-import FeaturesSection from '../../components/FeaturesSection';
-import EntranamientosAdaptan from '../../components/EntranamientosAdaptan';
 import Banner from '../../components/Banner';
 import ServiciosSection from '../../components/ServiciosSection';
 
@@ -14,9 +9,7 @@ const Home = () => {
       <HeroSection />
       <Banner whatsappUrl={whatsappUrl} />
       <ServiciosSection whatsappUrl={whatsappUrl} />
-
       {/* <EntranamientosAdaptan />
-      <FeaturesSection />
       <PlanesDePrecios />
       <SeccionTestimonios />
       <Ubication /> */}
