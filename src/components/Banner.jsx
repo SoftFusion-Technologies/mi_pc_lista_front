@@ -1,20 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 
-/**
- * BANNER — PC EN MARCHA (Bridge bajo el Hero)
- * OBJETIVO DE CONTENIDO:
- * - NO repetir el Hero (servicio técnico / diagnósticos / “sin vueltas”)
- * - Enfocar en: PCs armadas a pedido (cotización por perfil + armado + setup + pruebas)
- * - 3 perfiles: Estudio / Trabajo / Pro (Exigencia)
- * - Flujo: elegir perfil -> propuesta de componentes -> armado/config -> entrega
- * - Alcance: Córdoba Capital (mencionado UNA vez, claro)
- *
- * DISEÑO:
- * - Mantener warm glassmorphism + aurora + pattern tech + marquee
- * - No tocar estructura general, solo copy y etiquetas
- */
-
 const cx = (...c) => c.filter(Boolean).join(' ');
 
 const enter = {
@@ -44,48 +30,52 @@ const Banner = ({
   const inView = useInView(ref, { once: true, amount: 0.35 });
 
   // Rotador: proceso de compra/armado (sin repetir el Hero)
+  // Benjamin Orellana - 2026-02-02 - Copy más corto y orientado a conversión: perfil -> propuesta -> compra en locales confiables -> armado -> entrega.
   const taglines = useMemo(
     () => [
-      'Elegí un perfil y contanos tu presupuesto objetivo.',
-      'Te pasamos una propuesta de componentes con alternativas claras.',
-      'Armado prolijo + instalación + drivers: lista para usar.',
-      'Pruebas y checklist final antes de la entrega.',
-      'Garantía y soporte post-entrega para que estés tranquilo.'
+      'Elegí tu perfil y contanos el presupuesto.',
+      'Te enviamos la propuesta con alternativas.',
+      'Componentes en negocios confiables, a tu nombre.',
+      'Armado prolijo + instalación: lista para usar.',
+      'Checklist y pruebas antes de entregar.'
     ],
     []
   );
 
   const [idx, setIdx] = useState(0);
 
+  // Benjamin Orellana - 2026-02-02 - Optimiza el rotador: se activa solo cuando el banner entra en vista (misma UX, menos trabajo fuera de pantalla).
   useEffect(() => {
+    if (!inView) return;
     const t = setInterval(() => {
       setIdx((p) => (p + 1) % taglines.length);
-    }, 4200);
+    }, 3800);
     return () => clearInterval(t);
-  }, [taglines.length]);
+  }, [inView, taglines.length]);
 
   // Cards: 3 perfiles + “incluye” (evita repetir “Córdoba Capital” dentro del bloque)
+  // Benjamin Orellana - 2026-02-02 - Ajuste de descripciones: menos técnico, más “para qué te sirve” + claridad de compra a pedido.
   const features = useMemo(
     () => [
       {
         title: 'PC Estudio',
-        desc: 'Fluida para clases, trabajos, navegación, videollamadas y herramientas de todos los días.',
+        desc: 'Ideal para clases, tareas y videollamadas. Rápida y simple para el día a día.',
         tag: 'ESTUDIO'
       },
       {
         title: 'PC Trabajo',
-        desc: 'Multitarea y productividad: rendimiento consistente para laburo real y uso intensivo.',
+        desc: 'Multitarea sin fricción: herramientas, muchas pestañas y productividad real.',
         tag: 'TRABAJO'
       },
       {
         title: 'PC Pro',
-        desc: 'Para exigencia: proyectos grandes, edición, diseño y tareas más pesadas.',
+        desc: 'Para exigencia: edición, diseño y proyectos pesados con rendimiento consistente.',
         tag: 'PRO'
       },
       {
-        title: 'Incluye armado + setup + pruebas',
-        desc: 'Instalación, drivers y puesta a punto inicial + checklist final antes de entregar.',
-        tag: 'LISTA'
+        title: 'A pedido y con compra segura',
+        desc: 'Te pasamos opciones y se compra en locales confiables según tu necesidad y presupuesto.',
+        tag: 'OK'
       }
     ],
     []
@@ -119,12 +109,12 @@ const Banner = ({
       'PC Trabajo',
       'PC Pro',
       'Armado a pedido',
-      'Cableado prolijo',
+      'Opciones claras',
+      'Compra segura',
       'Instalación',
       'Drivers',
       'Configuración inicial',
       'Migración de datos',
-      'Seguridad básica',
       'Pruebas de estabilidad',
       'Checklist final',
       'Garantía y soporte'
@@ -211,7 +201,7 @@ const Banner = ({
           >
             <div className="inline-flex flex-wrap items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-xl">
               <span className="font-bignoodle tracking-[0.22em] text-[11px] uppercase crema">
-                PC EN MARCHA · pcs armadas a pedido
+                PC EN MARCHA · pc armada a pedido
               </span>
               <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--pc-oro)] shadow-[0_0_12px_rgba(222,174,97,0.45)]" />
               <span className="text-[12px] text-white/70">
@@ -222,15 +212,15 @@ const Banner = ({
             </div>
 
             <h2 className="mt-5 text-3xl sm:text-4xl md:text-5xl leading-[1.06]">
-              <span className="titulo block">¿Necesitás una PC nueva?</span>
+              <span className="titulo block">PC nueva, sin dudas.</span>
               <span className="titulo block mt-1">
-                Te la armamos lista para usar.
+                Elegís el perfil y te la entregamos lista.
               </span>
 
               <span className="cuerpo block mt-3 text-white/80 text-[15px] sm:text-base md:text-lg max-w-xl">
-                Elegís un perfil y te enviamos una propuesta completa de
-                componentes. Incluye armado, instalación, drivers y pruebas
-                antes de la entrega.
+                Te pasamos una propuesta rápida por WhatsApp con opciones
+                claras. Si hay que comprar partes, se hace en negocios
+                confiables según tu presupuesto.
               </span>
             </h2>
 
@@ -261,7 +251,7 @@ const Banner = ({
 
                   <div className="min-w-0">
                     <div className="text-[11px] uppercase tracking-[0.22em] text-white/55">
-                      proceso de compra
+                      cómo es el proceso
                     </div>
 
                     <div className="mt-2 text-[14px] sm:text-[15px] text-white/80 leading-relaxed">
@@ -334,7 +324,7 @@ const Banner = ({
                       'hover:bg-[rgba(125,137,52,0.16)] transition'
                     )}
                   >
-                    Pedir presupuesto por WhatsApp
+                    Solicitar presupuesto por WhatsApp
                   </button>
                 </a>
               ) : (
@@ -393,15 +383,15 @@ const Banner = ({
                     color: 'rgba(255,246,238,0.72)'
                   }}
                 >
-                  armado a pedido
+                  a pedido
                 </span>
               </div>
 
               {/* KPI row */}
               <div className="px-5 pt-4 grid grid-cols-3 gap-2">
                 {[
-                  { k: 'Perfiles', v: '3', w: '76%' },
-                  { k: 'Setup', v: 'Sistema + drivers', w: '68%' },
+                  { k: 'Perfil', v: '3 opciones', w: '76%' },
+                  { k: 'Armado', v: 'Listo para usar', w: '68%' },
                   { k: 'Entrega', v: 'Con checklist', w: '60%' }
                 ].map((it) => (
                   <div
@@ -477,8 +467,8 @@ const Banner = ({
                 </div>
 
                 <div className="mt-4 text-[12px] text-white/55">
-                  Te mandamos la propuesta completa y la dejamos lista para
-                  usar. Si querés, lo coordinamos por WhatsApp.
+                  Te enviamos la propuesta y coordinamos el armado. Si querés,
+                  lo cerramos por WhatsApp en minutos.
                 </div>
               </div>
 

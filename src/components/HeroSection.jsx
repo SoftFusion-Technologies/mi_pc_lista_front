@@ -513,6 +513,7 @@ const HeroSection = () => {
         <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
           {/* Left: copy */}
           <div className="text-left">
+            {/* Benjamin Orellana - 2026-02-02 - Ajuste de copy: menos técnico, más dolor real + confianza + CTA a WhatsApp/presupuesto. */}
             <motion.div
               variants={enter}
               initial="hidden"
@@ -521,11 +522,12 @@ const HeroSection = () => {
               className="inline-flex items-center gap-2 rounded-full border border-[rgba(245,214,187,0.18)] bg-[rgba(255,246,238,0.04)] px-4 py-2 backdrop-blur-md"
             >
               <span className="font-bignoodle tracking-[0.22em] text-[11px] uppercase crema">
-                Servicio técnico premium para PC y notebooks
+                PC rápidas y sin complicaciones
               </span>
               <span className="h-1.5 w-1.5 rounded-full bg-amarillo shadow-[0_0_12px_rgba(222,174,97,0.45)]" />
               <span className="text-[12px] text-[rgba(255,246,238,0.70)]">
-                Te decimos qué tiene tu PC y lo dejamos andando como debe{' '}
+                Contanos qué más o menos que necesitas y te pasamos presupuesto
+                por WhatsApp
               </span>
             </motion.div>
 
@@ -571,9 +573,9 @@ const HeroSection = () => {
               </span>
 
               <span className="cuerpo block mt-3 text-[15px] sm:text-base md:text-lg text-[rgba(255,246,238,0.74)] max-w-xl">
-                Reparación, optimización y mantenimiento con foco en
-                rendimiento, temperatura y estabilidad. Presupuesto antes de
-                avanzar y reporte claro de lo que se hizo, por qué y qué mejora.
+                Si tu PC está lenta, se traba o no rinde, la dejamos funcionando
+                como debe. Presupuesto antes de avanzar y explicación simple de
+                lo que se hizo.
               </span>
             </motion.h1>
 
@@ -602,11 +604,7 @@ const HeroSection = () => {
                         'linear-gradient(135deg, rgba(222,174,97,0.98), rgba(157,112,63,0.95))'
                     }}
                   >
-                    <span className="relative z-10">
-                      {primaryRoute?.name === 'Clase de Prueba'
-                        ? 'PEDÍ TU PRESUPUESTO'
-                        : 'CONTACTAR AHORA'}
-                    </span>
+                    <span className="relative z-10">SOLICITAR PRESUPUESTO</span>
 
                     {/* shimmer */}
                     <span
@@ -669,25 +667,17 @@ const HeroSection = () => {
               transition={{ delay: 0.1 }}
               className="mt-8 flex flex-wrap items-center gap-2.5"
             >
+              {/* Value chips (solo textos) */}
               {[
-                {
-                  t: 'Presupuesto antes de avanzar',
-                  s: 'rgba(222,174,97,0.16)'
-                },
-                {
-                  t: 'Optimización + rendimiento',
-                  s: 'rgba(245,214,187,0.14)'
-                },
-                { t: 'Backup y seguridad', s: 'rgba(157,112,63,0.16)' },
-                { t: 'Seguimiento y reporte', s: 'rgba(222,174,97,0.14)' }
+                { t: 'Solicitar presupuesto', s: 'rgba(222,174,97,0.16)' },
+                { t: 'Si está lenta o se traba', s: 'rgba(245,214,187,0.14)' },
+                { t: 'Trabajo a pedido', s: 'rgba(157,112,63,0.16)' },
+                { t: 'Componentes confiables', s: 'rgba(222,174,97,0.14)' }
               ].map((c) => (
                 <span
                   key={c.t}
                   className="rounded-full px-3 py-1 text-[12px] sm:text-[13px] border bg-[rgba(0,0,0,0.12)] backdrop-blur-md"
-                  style={{
-                    borderColor: c.s,
-                    color: 'rgba(255,246,238,0.78)'
-                  }}
+                  style={{ borderColor: c.s, color: 'rgba(255,246,238,0.78)' }}
                 >
                   {c.t}
                 </span>
@@ -971,23 +961,18 @@ const HeroSection = () => {
                 <div className="grid gap-2.5">
                   {[
                     {
-                      k: 'Rendimiento real',
-                      v: 'Limpieza, ajustes finos y optimización de arranque para que responda rápido.',
+                      k: 'Tu PC vuelve a rendir',
+                      v: 'La dejamos rápida para trabajar, estudiar o usarla sin frustración.',
                       tag: 'PRO'
                     },
                     {
-                      k: 'Estabilidad y temperaturas',
-                      v: 'Detectamos fallas, cuelgues y sobrecalentamiento. Pruebas y control térmico.',
+                      k: 'Sin complicaciones',
+                      v: 'Encontramos la causa y lo solucionamos para que sea estable.',
                       tag: 'CHECK'
                     },
                     {
-                      k: 'Seguridad + backup',
-                      v: 'Respaldo de datos, protección y recomendaciones para evitar pérdidas y malware.',
-                      tag: 'SAFE'
-                    },
-                    {
-                      k: 'Transparencia total',
-                      v: 'Te entregamos detalle por escrito: qué se hizo, por qué y el resultado esperado.',
+                      k: 'Trabajo a pedido',
+                      v: 'Si hace falta cambiar algo, se elige con vos y se compra en locales confiables.',
                       tag: 'CLEAR'
                     }
                   ].map((r) => (
@@ -1032,19 +1017,19 @@ const HeroSection = () => {
                     className="rounded-full border px-3 py-1 bg-[rgba(255,246,238,0.03)]"
                     style={{ borderColor: 'rgba(245,214,187,0.14)' }}
                   >
-                    Cuidado en los detalles
+                    Trabajo a pedido
                   </span>
                   <span
                     className="rounded-full border px-3 py-1 bg-[rgba(255,246,238,0.03)]"
                     style={{ borderColor: 'rgba(245,214,187,0.14)' }}
                   >
-                    Reporte por escrito
+                    Presupuesto por WhatsApp
                   </span>
                   <span
                     className="rounded-full border px-3 py-1 bg-[rgba(255,246,238,0.03)]"
                     style={{ borderColor: 'rgba(245,214,187,0.14)' }}
                   >
-                    Resultados comprobables
+                    Componentes en locales confiables{' '}
                   </span>
                 </div>
               </div>
