@@ -210,7 +210,7 @@ export default function WelcomeModal({
 
                 <h2
                   id={headingId}
-                  className="mt-4 text-white text-[26px] md:text-[32px] font-black leading-tight"
+                  className="mt-4 titulo uppercase text-white text-[26px] md:text-[32px] font-black leading-tight"
                 >
                   {title}
                 </h2>
