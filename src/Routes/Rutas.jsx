@@ -1,7 +1,4 @@
 import Home from "../Pages/Public/Home.jsx";
-import Horarios from "../Pages/Public/Horarios.jsx";
-import Socios from "../Pages/Public/Socios.jsx";
-import Espacios from "../Pages/Public/Espacios.jsx";
 import PcEstudio from "../Pages/PcEstudio.jsx";
 import PcTrabajo from "../Pages/PcTrabajo.jsx";
 import PcPro from "../Pages/PcPro.jsx";

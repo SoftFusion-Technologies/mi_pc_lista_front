@@ -8,7 +8,7 @@ import pctrabajo from '../assets/hero/pctrabajo.webp';
 import { FaMousePointer } from 'react-icons/fa';
 
 /**
- * HERO — Mi PC Lista
+ * HERO — PC EN MARCHA
  * - Usa paleta CSS vars: --pc-bg / --pc-surface / --pc-oro / --pc-oro-oscuro / --pc-crema / --pc-marfil / --pc-wsp
  * - Mantiene Framer Motion + rutas existentes
  * - Estilo: premium, cálido, glass + cobre/oro, órbitas (pero con iconografía PC)
@@ -131,7 +131,7 @@ const HeroSection = () => {
     return routes?.find?.((r) => preferredNames.includes(r?.name)) || null;
   }, []);
 
-  // --------- SVGs (data-uri) en paleta Mi PC Lista (oro/cobre sobre fondos cálidos) ---------
+  // --------- SVGs (data-uri) en paleta PC EN MARCHA (oro/cobre sobre fondos cálidos) ---------
   const circuitPattern = encodeURIComponent(`
     <svg xmlns="http://www.w3.org/2000/svg" width="220" height="220" viewBox="0 0 220 220">
       <defs>
@@ -534,10 +534,10 @@ const HeroSection = () => {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, amount: 0.5 }}
-              className="mt-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.04]"
+              className="mt-6 text-4xl sm:text-5xl md:text-6xl lg:text-6xl leading-[1.04]"
             >
               <span className="titulo block">
-                MI PC
+                PC
                 <span className="ml-3 inline-block">
                   <motion.span
                     ref={hitRef}
@@ -554,7 +554,7 @@ const HeroSection = () => {
                         textShadow: '0 14px 50px rgba(222,174,97,0.12)'
                       }}
                     >
-                      LISTA
+                      EN MARCHA
                     </span>
 
                     {/* halo ring */}
@@ -740,7 +740,7 @@ const HeroSection = () => {
                 <div className="flex items-center gap-2">
                   <span className="h-2.5 w-2.5 rounded-full bg-[rgba(222,174,97,0.85)] shadow-[0_0_12px_rgba(222,174,97,0.45)]" />
                   <span className="text-[12px] uppercase tracking-[0.20em] text-[rgba(255,246,238,0.68)] font-messina">
-                    mi pc lista
+                    PC EN MARCHA
                   </span>
                 </div>
               </div>

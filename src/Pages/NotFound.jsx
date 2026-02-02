@@ -99,7 +99,7 @@ export default function NotFound({
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-xl">
               <span className="font-bignoodle tracking-[0.22em] text-[11px] uppercase crema">
-                mi pc lista · soporte premium
+                PC EN MARCHA · soporte premium
               </span>
               <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--pc-oro)] shadow-[0_0_12px_rgba(222,174,97,0.45)]" />
               <span className="text-[12px] text-white/70">Error 404</span>

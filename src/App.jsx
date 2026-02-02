@@ -1,21 +1,69 @@
-import { Routes, Route, Link, Navigate } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './Layout/Navbar.jsx';
 import routes from './Routes/Rutas.jsx';
 import Footer from './Layout/Footer.jsx';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { AuthProvider } from './AuthContext';
-// cambio agregado por Benjamin Orellana
 import NotFound from './Pages/NotFound.jsx';
 import ScrollToTop from './components/ScrollToTop.jsx';
+import FloatingWhatsAppCta from './components/FloatingWhatsAppCta.jsx';
+import WelcomeModal from './components/WelcomeModal.jsx';
+
 export default function App() {
+  const location = useLocation();
+
+  // Benjamin Orellana - 2026-02-02 - Controla apertura de modal de bienvenida 1 vez por visita (session), y permite que reaparezca si el usuario sale y vuelve a entrar al sitio.
+  const [welcomeOpen, setWelcomeOpen] = useState(false);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location.pathname]);
+
+  // Benjamin Orellana - 2026-02-02 - Abre la modal solo si no se mostró en esta visita; al salir del sitio se limpia el flag para que aparezca en la próxima entrada.
+  useEffect(() => {
+    const KEY = 'pc_welcome_seen_session_v1';
+
+    try {
+      const seen = sessionStorage.getItem(KEY);
+      if (!seen) setWelcomeOpen(true);
+    } catch {
+      setWelcomeOpen(true);
+    }
+
+    const clearOnLeave = () => {
+      try {
+        sessionStorage.removeItem(KEY);
+      } catch {
+        // noop
+      }
+    };
+
+    // pagehide cubre navegación afuera y cierre de pestaña; beforeunload cubre ciertos casos legacy
+    window.addEventListener('pagehide', clearOnLeave);
+    window.addEventListener('beforeunload', clearOnLeave);
+
+    return () => {
+      window.removeEventListener('pagehide', clearOnLeave);
+      window.removeEventListener('beforeunload', clearOnLeave);
+    };
+  }, []);
+
+  const whatsappHref = 'https://wa.me/5495493517612425';
+
+  const closeWelcome = () => {
+    setWelcomeOpen(false);
+    try {
+      sessionStorage.setItem('pc_welcome_seen_session_v1', '1');
+    } catch {
+      // noop
+    }
+  };
+
   return (
     <AuthProvider>
-      {/* El Navbar se mostrará en todas las páginas si está fuera de <Routes> */}
       <Navbar />
+
       <ScrollToTop
         top={0}
         behavior="auto"
@@ -25,23 +73,32 @@ export default function App() {
         easing="easeOutCubic"
         showOverlay
       />
+
+      <FloatingWhatsAppCta
+        whatsappHref={whatsappHref}
+        label="Pedir presupuesto"
+      />
+
+      <WelcomeModal
+        open={welcomeOpen}
+        onClose={closeWelcome}
+        whatsappHref={whatsappHref}
+        zona="Córdoba Capital"
+      />
+
       <Routes>
-        {/* Ruta pública para Login */}
-        {/* Rutas protegidas */}
         {routes.map((route, index) => (
           <Route key={index} path={route.path} element={route.element} />
         ))}
-        {/* Ruta para redirigir si se intenta acceder a la raíz sin estar logueado */}
+
         <Route
           path="*"
           element={
-            <NotFound
-              whatsappUrl="https://wa.me/5495493517612425"
-              zona="Córdoba Capital"
-            />
+            <NotFound whatsappUrl={whatsappHref} zona="Córdoba Capital" />
           }
-        />{' '}
+        />
       </Routes>
+
       <Footer />
     </AuthProvider>
   );

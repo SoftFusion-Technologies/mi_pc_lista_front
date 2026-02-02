@@ -121,7 +121,7 @@ export default function ComoPedir() {
         n: 5,
         icon: <FaTruck />,
         title: 'Entrega y soporte post-servicio',
-        desc: 'Te entregamos la PC lista, probada y con recomendaciones básicas para mantenerla bien.',
+        desc: 'Te entregamos la PC EN MARCHA, probada y con recomendaciones básicas para mantenerla bien.',
         note: 'Si necesitás seguimiento, coordinamos soporte y próximos pasos.'
       }
     ],

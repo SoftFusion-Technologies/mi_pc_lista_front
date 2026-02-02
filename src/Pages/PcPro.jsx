@@ -133,7 +133,7 @@ export default function PcPro() {
       },
       {
         src: 'https://images.unsplash.com/photo-1527443154391-507e9dc6c5cc?auto=format&fit=crop&w=1600&q=70',
-        alt: 'PC lista para usar',
+        alt: 'PC EN MARCHA para usar',
         label: 'LISTA'
       }
     ],
@@ -288,7 +288,7 @@ export default function PcPro() {
                 <div className="flex flex-wrap items-center gap-2">
                   <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/35 px-4 py-2">
                     <span className="font-bignoodle tracking-[0.24em] text-[11px] uppercase text-white/85">
-                      mi pc lista · pc pro
+                      PC EN MARCHA · pc pro
                     </span>
                     <span className="h-1.5 w-1.5 rounded-full bg-[rgba(255,70,170,0.85)] shadow-[0_0_16px_rgba(255,70,170,0.45)]" />
                     

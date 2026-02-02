@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 
 /**
- * BANNER — Mi PC Lista (Bridge bajo el Hero)
+ * BANNER — PC EN MARCHA (Bridge bajo el Hero)
  * OBJETIVO DE CONTENIDO:
  * - NO repetir el Hero (servicio técnico / diagnósticos / “sin vueltas”)
  * - Enfocar en: PCs armadas a pedido (cotización por perfil + armado + setup + pruebas)
@@ -211,7 +211,7 @@ const Banner = ({
           >
             <div className="inline-flex flex-wrap items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-xl">
               <span className="font-bignoodle tracking-[0.22em] text-[11px] uppercase crema">
-                mi pc lista · pcs armadas a pedido
+                PC EN MARCHA · pcs armadas a pedido
               </span>
               <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--pc-oro)] shadow-[0_0_12px_rgba(222,174,97,0.45)]" />
               <span className="text-[12px] text-white/70">

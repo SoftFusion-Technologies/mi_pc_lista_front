@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 /**
- * ServiciosSection — Mi PC Lista (selector de perfiles)
+ * ServiciosSection — PC EN MARCHA (selector de perfiles)
  * Objetivo:
  * - Selector de 3 presupuestos (Estudio / Trabajo / Exigencia)
  * - Mostrar specs + servicios + garantía
@@ -298,7 +298,17 @@ export default function ServiciosSection({
 
               <h2 className="mt-5 text-3xl sm:text-4xl md:text-5xl leading-[1.06]">
                 <span className="titulo block uppercase">
-                  Elegí el perfil y pedí tu PC lista
+                  Elegí el perfil y pedí tu{' '}
+                  <span
+                    className="relative z-10 bg-clip-text text-transparent"
+                    style={{
+                      backgroundImage:
+                        'linear-gradient(90deg, rgba(255,246,238,0.95), rgba(222,174,97,0.92), rgba(157,112,63,0.90))',
+                      textShadow: '0 14px 50px rgba(222,174,97,0.12)'
+                    }}
+                  >
+                    PC EN MARCHA
+                  </span>
                 </span>
               </h2>
 

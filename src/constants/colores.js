@@ -1,1 +1,0 @@
-export const naranja = "#EC630D";

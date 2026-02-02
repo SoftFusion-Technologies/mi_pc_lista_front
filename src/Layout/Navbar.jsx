@@ -27,7 +27,7 @@ const Navbar = () => {
 
   const whatsappHref = useMemo(() => {
     const text = encodeURIComponent(
-      'Hola! Quiero presupuesto para una PC lista para usar. ¿Me asesorás según lo que necesito (estudio/trabajo/pro)?'
+      'Hola! Quiero presupuesto para una PC EN MARCHA para usar. ¿Me asesorás según lo que necesito (estudio/trabajo/pro)?'
     );
     return `https://wa.me/${WHATSAPP_NUMBER_WA}?text=${text}`;
   }, []);
@@ -108,7 +108,7 @@ const shellSkin =
               >
                 <img
                   src={Logo}
-                  alt="mi PC lista"
+                  alt="PC EN MARCHA"
                   className="h-full w-full object-cover"
                 />
                 <span className="pointer-events-none absolute inset-0 ring-1 ring-[color:var(--pc-oro)]/15" />
@@ -125,7 +125,7 @@ const shellSkin =
                       textPrimary
                     ].join(' ')}
                   >
-                    mi PC lista
+                    PC EN MARCHA
                   </span>
 
                   <span
@@ -288,13 +288,13 @@ const shellSkin =
               <div className="h-10 w-10 rounded-2xl overflow-hidden ring-1 ring-white/10 bg-white/5">
                 <img
                   src={Logo}
-                  alt="mi PC lista"
+                  alt="PC EN MARCHA"
                   className="h-full w-full object-cover"
                 />
               </div>
               <div>
                 <div className="text-lg font-extrabold text-white leading-none">
-                  mi PC lista
+                  PC EN MARCHA
                 </div>
                 <div className="text-xs text-white/65 mt-1">
                   Solo pedidos Córdoba Capital

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @font-face {
   font-family: 'Montserrat';
@@ -8,34 +8,39 @@
 }
 
 @font-face {
-  font-family: "BigNoodle";
+  font-family: 'BigNoodle';
   src: url('./font/big_noodle_titling.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: "MessinaRegular";
+  font-family: 'MessinaRegular';
   src: url('./font/MessinaSans-Regular.ttf') format('truetype');
 }
 
 /* =========================
-   PALETA mi PC lista (brand)
+   PALETA PC EN MARCHA (brand)
    ========================= */
 :root {
   /* Brand */
-  --pc-oro: #DEAE61;
-  --pc-oro-oscuro: #9D703F;
+  --pc-oro: #deae61;
+  --pc-oro-oscuro: #9d703f;
 
   /* Neutrales cálidos */
-  --pc-crema: #F5D6BB;
-  --pc-marfil: #FFF6EE;
+  --pc-crema: #f5d6bb;
+  --pc-marfil: #fff6ee;
 
-  /* Fondos */
+  /* Fondos
   --pc-bg: #2D1C1B;
   --pc-surface: #3D2726;
-  --pc-surface-2: #52332C;
+  --pc-surface-2: #52332C; */
+
+  /* Fondos (logo PC en Marcha) */
+  --pc-bg: #041d52; /* azul noche */
+  --pc-surface: #042e6b; /* azul medio */
+  --pc-surface-2: #043474; /* azul un poco más claro */
 
   /* Acción */
-  --pc-wsp: #7D8934;
+  --pc-wsp: #7d8934;
 
   /* Tipografías */
   --font-family-base: 'Montserrat', sans-serif;
@@ -64,8 +69,12 @@ h1 {
   font-weight: var(--font-weight-regular);
 }
 
-.font-bignoodle { font-family: BigNoodle; }
-.font-messina { font-family: MessinaRegular; }
+.font-bignoodle {
+  font-family: BigNoodle;
+}
+.font-messina {
+  font-family: MessinaRegular;
+}
 
 /* =========================
    UTILIDADES (clases directas)
@@ -73,35 +82,79 @@ h1 {
    ========================= */
 @layer utilities {
   /* Texto */
-  .amarillo { color: var(--pc-oro); }
-  .amarillo-oscuro { color: var(--pc-oro-oscuro); }
-  .crema { color: var(--pc-crema); }
-  .marfil { color: var(--pc-marfil); }
-  .verde-wsp { color: var(--pc-wsp); }
-  .fondo { color: var(--pc-bg); }
+  .amarillo {
+    color: var(--pc-oro);
+  }
+  .amarillo-oscuro {
+    color: var(--pc-oro-oscuro);
+  }
+  .crema {
+    color: var(--pc-crema);
+  }
+  .marfil {
+    color: var(--pc-marfil);
+  }
+  .verde-wsp {
+    color: var(--pc-wsp);
+  }
+  .fondo {
+    color: var(--pc-bg);
+  }
 
   /* Backgrounds */
-  .bg-amarillo { background-color: var(--pc-oro); }
-  .bg-amarillo-oscuro { background-color: var(--pc-oro-oscuro); }
-  .bg-crema { background-color: var(--pc-crema); }
-  .bg-fondo { background-color: var(--pc-bg); }
-  .bg-surface { background-color: var(--pc-surface); }
-  .bg-surface-2 { background-color: var(--pc-surface-2); }
-  .bg-wsp { background-color: var(--pc-wsp); }
+  .bg-amarillo {
+    background-color: var(--pc-oro);
+  }
+  .bg-amarillo-oscuro {
+    background-color: var(--pc-oro-oscuro);
+  }
+  .bg-crema {
+    background-color: var(--pc-crema);
+  }
+  .bg-fondo {
+    background-color: var(--pc-bg);
+  }
+  .bg-surface {
+    background-color: var(--pc-surface);
+  }
+  .bg-surface-2 {
+    background-color: var(--pc-surface-2);
+  }
+  .bg-wsp {
+    background-color: var(--pc-wsp);
+  }
 
   /* Bordes */
-  .border-amarillo { border-color: var(--pc-oro); }
-  .border-amarillo-oscuro { border-color: var(--pc-oro-oscuro); }
-  .border-wsp { border-color: var(--pc-wsp); }
+  .border-amarillo {
+    border-color: var(--pc-oro);
+  }
+  .border-amarillo-oscuro {
+    border-color: var(--pc-oro-oscuro);
+  }
+  .border-wsp {
+    border-color: var(--pc-wsp);
+  }
 
   /* Ring (útil para focus/hover) */
-  .ring-amarillo { --tw-ring-color: var(--pc-oro); }
-  .ring-wsp { --tw-ring-color: var(--pc-wsp); }
+  .ring-amarillo {
+    --tw-ring-color: var(--pc-oro);
+  }
+  .ring-wsp {
+    --tw-ring-color: var(--pc-wsp);
+  }
 }
 
 /* Animación que ya tenías */
 @keyframes ray {
-  0%   { transform: translateX(-40%) skewX(-12deg); opacity: 0; }
-  15%  { opacity: .9; }
-  100% { transform: translateX(40%)  skewX(-12deg); opacity: 0; }
+  0% {
+    transform: translateX(-40%) skewX(-12deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateX(40%) skewX(-12deg);
+    opacity: 0;
+  }
 }

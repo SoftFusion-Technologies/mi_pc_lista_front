@@ -7,8 +7,8 @@ const Home = () => {
   return (
     <div className="bg-gray-900 text-white">
       <HeroSection />
-      <Banner whatsappUrl={whatsappUrl} />
       <ServiciosSection whatsappUrl={whatsappUrl} />
+      <Banner whatsappUrl={whatsappUrl} />
       {/* <EntranamientosAdaptan />
       <PlanesDePrecios />
       <SeccionTestimonios />

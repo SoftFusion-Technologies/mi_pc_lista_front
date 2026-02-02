@@ -93,7 +93,7 @@ const Footer = ({
   );
 
   const wspText =
-    'Hola! Quiero pedir una PC lista para usar. Estoy en Córdoba Capital. Me asesorás con los perfiles y componentes?';
+    'Hola! Quiero pedir una PC EN MARCHA para usar. Estoy en Córdoba Capital. Me asesorás con los perfiles y componentes?';
 
   const wspLink = whatsappUrl ? buildWhatsAppLink(whatsappUrl, wspText) : '';
 
@@ -150,7 +150,7 @@ const Footer = ({
           <div className="space-y-5">
             <NavLink to="/" className="inline-flex items-center gap-3">
               <span className="font-bignoodle text-[22px] sm:text-[26px] tracking-[0.22em] uppercase crema">
-                mi pc lista
+                PC EN MARCHA
               </span>
 
               <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--pc-oro)] shadow-[0_0_14px_rgba(222,174,97,0.45)]" />
@@ -333,7 +333,7 @@ const Footer = ({
         {/* Bottom bar */}
         <div className="mt-12 border-t border-white/10 pt-8 text-center">
           <div className="text-[13px] text-white/60">
-            © {year} <span className="crema font-semibold">mi pc lista</span>.
+            © {year} <span className="crema font-semibold">PC EN MARCHA</span>.
             Todos los derechos reservados.
           </div>
 

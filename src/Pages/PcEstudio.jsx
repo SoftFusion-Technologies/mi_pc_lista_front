@@ -116,7 +116,7 @@ export default function PcEstudio() {
       },
       {
         src: 'https://images.unsplash.com/photo-1527443154391-507e9dc6c5cc?auto=format&fit=crop&w=1400&q=70',
-        alt: 'PC lista para usar',
+        alt: 'PC EN MARCHA para usar',
         tag: 'LISTA'
       },
       {
@@ -216,7 +216,7 @@ export default function PcEstudio() {
               <div className="min-w-0 flex-1">
                 <div className="inline-flex flex-wrap items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2">
                   <span className="font-bignoodle tracking-[0.22em] text-[11px] uppercase crema">
-                    mi pc lista · pc estudio
+                    PC EN MARCHA · pc estudio
                   </span>
                   <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--pc-oro)] shadow-[0_0_12px_rgba(222,174,97,0.45)]" />
                   <span className="text-[12px] text-white/70">
