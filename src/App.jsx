@@ -76,7 +76,7 @@ export default function App() {
 
       <FloatingWhatsAppCta
         whatsappHref={whatsappHref}
-        label="Pedir presupuesto"
+        label="TE AYUDAMOS A ELEGIR BIEN"
       />
 
       <WelcomeModal

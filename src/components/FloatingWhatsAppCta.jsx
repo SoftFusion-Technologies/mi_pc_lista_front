@@ -4,7 +4,7 @@ import { FaWhatsapp } from 'react-icons/fa';
 
 export default function FloatingWhatsAppCta({
   whatsappHref,
-  label = 'Pedir presupuesto',
+  label = 'TE AYUDAMOS A ELEGIR BIEN',
   className = ''
 }) {
   const reduceMotion = useReducedMotion();

@@ -191,7 +191,7 @@ export default function ComoPedir() {
 
               <h1 className="mt-5 leading-[1.05]">
                 <span className="titulo block text-3xl sm:text-4xl md:text-5xl text-white/95">
-                  Pedir presupuesto es fácil
+                  TE AYUDAMOS A ELEGIR BIEN es fácil
                 </span>
                 <span className="titulo block mt-1 text-2xl sm:text-3xl md:text-4xl text-white/85">
                   5 pasos, sin confusión

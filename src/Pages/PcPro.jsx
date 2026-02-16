@@ -390,7 +390,7 @@ export default function PcPro() {
                       }}
                     >
                       <FaWhatsapp />
-                      Pedir presupuesto gamer
+                      TE AYUDAMOS A ELEGIR BIEN gamer
                       <FaArrowRight className="opacity-85" />
                       <span
                         aria-hidden

@@ -324,7 +324,7 @@ const Banner = ({
                       'hover:bg-[rgba(125,137,52,0.16)] transition'
                     )}
                   >
-                    Solicitar presupuesto por WhatsApp
+                    TE AYUDAMOS A ELEGIR BIEN por WhatsApp
                   </button>
                 </a>
               ) : (
