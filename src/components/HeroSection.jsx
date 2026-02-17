@@ -124,7 +124,6 @@ const HeroSection = () => {
       'Contacto',
       'Turno',
       'Presupuesto',
-      'TE AYUDAMOS A ELEGIR BIEN',
       'WhatsApp',
       'Clase de Prueba' // compatibilidad con tu base actual
     ];
@@ -669,7 +668,6 @@ const HeroSection = () => {
             >
               {/* Value chips (solo textos) */}
               {[
-                { t: 'TE AYUDAMOS A ELEGIR BIEN', s: 'rgba(222,174,97,0.16)' },
                 { t: 'Si está lenta o se traba', s: 'rgba(245,214,187,0.14)' },
                 { t: 'Trabajo a pedido', s: 'rgba(157,112,63,0.16)' },
                 { t: 'Componentes confiables', s: 'rgba(222,174,97,0.14)' }

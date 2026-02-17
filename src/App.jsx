@@ -9,6 +9,7 @@ import NotFound from './Pages/NotFound.jsx';
 import ScrollToTop from './components/ScrollToTop.jsx';
 import FloatingWhatsAppCta from './components/FloatingWhatsAppCta.jsx';
 import WelcomeModal from './components/WelcomeModal.jsx';
+import { WHATSAPP_URL, ZONA } from './config/links.js';
 
 export default function App() {
   const location = useLocation();
@@ -39,7 +40,6 @@ export default function App() {
       }
     };
 
-    // pagehide cubre navegación afuera y cierre de pestaña; beforeunload cubre ciertos casos legacy
     window.addEventListener('pagehide', clearOnLeave);
     window.addEventListener('beforeunload', clearOnLeave);
 
@@ -48,8 +48,6 @@ export default function App() {
       window.removeEventListener('beforeunload', clearOnLeave);
     };
   }, []);
-
-  const whatsappHref = 'https://wa.me/5495493517612425';
 
   const closeWelcome = () => {
     setWelcomeOpen(false);
@@ -75,15 +73,15 @@ export default function App() {
       />
 
       <FloatingWhatsAppCta
-        whatsappHref={whatsappHref}
+        whatsappHref={WHATSAPP_URL}
         label="TE AYUDAMOS A ELEGIR BIEN"
       />
 
       <WelcomeModal
         open={welcomeOpen}
         onClose={closeWelcome}
-        whatsappHref={whatsappHref}
-        zona="Córdoba Capital"
+        whatsappHref={WHATSAPP_URL}
+        zona={ZONA}
       />
 
       <Routes>
@@ -93,9 +91,7 @@ export default function App() {
 
         <Route
           path="*"
-          element={
-            <NotFound whatsappUrl={whatsappHref} zona="Córdoba Capital" />
-          }
+          element={<NotFound whatsappUrl={WHATSAPP_URL} zona={ZONA} />}
         />
       </Routes>
 
